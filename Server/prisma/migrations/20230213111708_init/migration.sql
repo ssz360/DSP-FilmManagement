@@ -1,0 +1,8 @@
+-- CreateTable
+CREATE TABLE "UsersActiveFilms" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "filmId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
+    CONSTRAINT "UsersActiveFilms_filmId_fkey" FOREIGN KEY ("filmId") REFERENCES "Film" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "UsersActiveFilms_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

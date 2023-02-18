@@ -1,0 +1,821 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Title",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001/api"
+    }
+  ],
+  "paths": {
+    "/active-films": {
+      "get": {
+        "operationId": "get active movie",
+        "responses": {
+          "200": {
+            "description": "get the user's active film",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "activeFilmId": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete active movie",
+        "responses": {
+          "200": {
+            "description": "delete the user's active film",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "activeFilmId": { "type": "integer" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/active-films/:filmId": {
+      "get": {
+        "operationId": "set movie active",
+        "responses": {
+          "200": {
+            "description": "set a movie as active for the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/gprc/convert-image": {
+      "get": {
+        "operationId": "gprc convert image",
+        "responses": {
+          "200": {
+            "description": "convert the image",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "fileName": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invitation/issuer": {
+      "get": {
+        "operationId": "get list of issued invitations",
+        "responses": {
+          "200": {
+            "description": "Get list of invitations that are issued by the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/invitationModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invitation/invited": {
+      "get": {
+        "operationId": "get list of invitations",
+        "responses": {
+          "200": {
+            "description": "Get list of invitations that are issued for the user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/invitationModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invitation": {
+      "post": {
+        "operationId": "issue new invitation",
+        "requestBody": {
+          "description": "issue new invitation",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/issueInvitationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/invitationModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/invitation/:id": {
+      "delete": {
+        "operationId": "delete an invitation",
+        "description": "delete an invitation by its ID",
+        "responses": {
+          "200": {
+            "description": "when the film deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "True"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "when the film not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "False"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/all": {
+      "get": {
+        "operationId": "get all",
+        "responses": {
+          "200": {
+            "description": "Get list of all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/userModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/isUserLoggedIn": {
+      "get": {
+        "operationId": "get if user logged in",
+        "responses": {
+          "200": {
+            "description": "the 200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "isLoggedIn": { "type": "boolean" },
+                    "user": { "$ref": "#/components/schemas/loginResponse" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "operationId": "login  ",
+        "requestBody": {
+          "description": "The request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/loginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "if user logout successfully",
+            "content": {}
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registerRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "when user logged in successfully"
+          }
+        }
+      }
+    },
+    "/films": {
+      "get": {
+        "operationId": "get films",
+        "description": "get films (public films and user films)",
+        "responses": {
+          "200": {
+            "description": "list of films",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/filmsResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create new film",
+        "requestBody": {
+          "description": "the request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createFilmRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "the response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createFilmResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/films/:id": {
+      "get": {
+        "operationId": "get films by Id",
+        "responses": {
+          "200": {
+            "description": "the film",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/filmResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete film",
+        "description": "delete film by its ID",
+        "responses": {
+          "200": {
+            "description": "when the film deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "True"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "when the film not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "False"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "update film",
+        "description": "update film by its Id",
+        "requestBody": {
+          "description": "the updated data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/createFilmRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "when the film is undated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/filmResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/films/media/:id": {
+      "delete": {
+        "operationId": "delete media",
+        "description": "delete media by its ID",
+        "responses": {
+          "200": {
+            "description": "when the media deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "True"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "when the media not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "False"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/films/yourFilms": {
+      "get": {
+        "operationId": "get your films",
+        "responses": {
+          "200": {
+            "description": "list of films",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/filmsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reviews": {
+      "post": {
+        "operationId": "submit new review",
+        "requestBody": {
+          "description": "submit a new review",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/submitReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "the response of new review",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/submitReviewResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reviews/:id": {
+      "delete": {
+        "operationId": "delete review",
+        "description": "delete review by its ID",
+        "responses": {
+          "200": {
+            "description": "when the review is deleted successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "True"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "when the review not found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "result": "False"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "update review",
+        "description": "update review by its Id",
+        "requestBody": {
+          "description": "the updated data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/submitReviewRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "when the film is undated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/submitReviewResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reviews/film/:filmId": {
+      "get": {
+        "operationId": "get review by film id",
+        "responses": {
+          "200": {
+            "description": "the review by its film id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/reviewsResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "issueInvitationRequest": {
+        "type": "object",
+        "properties": {
+          "filmId": { "type": "integer" },
+          "invitedUserId": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+
+      "invitationModel": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "filmId": { "type": "integer" },
+          "issuedById": { "type": "integer" },
+          "invitedUserId": { "type": "integer" },
+          "issuer": {
+            "$ref": "#/components/schemas/userModel"
+          },
+          "reviewer": {
+            "$ref": "#/components/schemas/userModel"
+          },
+          "film": {
+            "$ref": "#/components/schemas/film"
+          },
+          "done": {
+            "type": "boolean"
+          }
+        }
+      },
+      "reviewsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "$ref": "#/components/schemas/submitReviewRequest"
+        }
+      },
+      "submitReviewRequest": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "filmId": { "type": "integer" },
+          "completed": { "type": "boolean", "default": false },
+          "reviewDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "review": { "type": "string", "maxLength": 1000 },
+          "issuedById": { "type": "integer" }
+        }
+      },
+      "submitReviewResponse": {
+        "type": "object",
+        "properties": {
+          "filmId": { "type": "integer" },
+          "issuedById": { "type": "integer" },
+          "completed": { "type": "boolean", "default": false },
+          "reviewDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "review": { "type": "string", "maxLength": 1000 },
+          "id": { "type": "integer" },
+          "userId": { "type": "integer" }
+        }
+      },
+      "filmResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "title": { "type": "string" },
+          "ownerId": { "type": "number" },
+          "private": { "type": "boolean" },
+          "watchDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "number" },
+          "favorite": { "type": "boolean" }
+        },
+        "example": "{\"id\":0,\"title\":\"Film 1\",\"ownerId\":3,\"private\":true,\"watchDate\":\"2022-12-30T00:00:00.000Z\",\"rating\":2,\"favorite\":false}"
+      },
+      "filmsResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "$ref": "#/components/schemas/filmResponse"
+        },
+        "example": "[{\"id\":0,\"title\":\"Film 1\",\"ownerId\":3,\"private\":true,\"watchDate\":\"2022-12-30T00:00:00.000Z\",\"rating\":2,\"favorite\":false},{\"id\":1,\"title\":\"Film 3\",\"ownerId\":3,\"private\":true,\"watchDate\":\"2022-12-13T00:00:00.000Z\",\"rating\":3,\"favorite\":false}]"
+      },
+      "createFilmRequest": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "isPrivate": { "type": "boolean", "default": true },
+          "watchDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "favorite": { "type": "boolean", "default": false },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "data": { "type": "string" },
+                "name": { "type": "string" }
+              }
+            }
+          }
+        }
+      },
+      "createFilmResponse": {
+        "type": "object",
+        "properties": {
+          "title": { "type": "string" },
+          "private": { "type": "boolean", "default": true },
+          "watchDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "favorite": { "type": "boolean", "default": false },
+          "ownerId": { "type": "number" }
+        }
+      },
+      "loginResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "name": { "type": "string" },
+          "email": { "type": "string", "pattern": "email" }
+        }
+      },
+      "loginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "pattern": "email"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "registerRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "passwordConfirmation": { "type": "string" },
+          "name": { "type": "string" }
+        },
+        "required": ["email", "password", "passwordConfirmation", "name"]
+      },
+      "_date": {
+        "type": "string",
+        "pattern": "^(19|20)[0-9]{2}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
+      },
+      "userModel": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "minLength": 6, "maxLength": 20 }
+        }
+      },
+      "film": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" },
+          "ownerId": { "type": "integer" },
+          "private": { "type": "boolean", "default": true },
+          "watchDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "favorite": { "type": "boolean", "default": false },
+          "medias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/media"
+            }
+          }
+        }
+      },
+      "media": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "type": { "type": "string" },
+          "name": { "type": "string" },
+          "filmId": { "type": "integer" }
+        }
+      },
+      "review": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "filmId": { "type": "integer" },
+          "issuedById": { "type": "integer" },
+          "invitedUserId": { "type": "integer" },
+          "completed": { "type": "boolean", "default": false },
+          "reviewDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "review": { "type": "string", "maxLength": 1000 },
+          "userId": { "type": "integer" }
+        }
+      },
+      "websocketMessageModel": {
+        "type": "object",
+        "properties": {
+          "typeMessage": {
+            "type": "string",
+            "description": "type of the message (the available types are login, logout, or update)",
+            "enum": [
+              "login",
+              "logout",
+              "update",
+              "snapshot_online",
+              "snapshot_activeFilms"
+            ]
+          },
+          "userId": {
+            "type": "integer",
+            "description": "identified of the user"
+          },
+          "userName": {
+            "type": "string",
+            "description": "name of the user"
+          },
+          "filmId": {
+            "type": "integer",
+            "description": "identified of the film"
+          },
+          "taskName": {
+            "type": "string",
+            "description": "title of the film"
+          }
+        }
+      },
+      "MqttFilmActiveModel": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "current condition of the film (the available types are active if it is selected by a user, inactive if it is not selected by any user, or deleted if it has been removed from the service)",
+            "enum": ["active", "inactive", "deleted"]
+          },
+          "userId": {
+            "type": "integer",
+            "description": "identifier of the user"
+          },
+          "userName": {
+            "type": "string",
+            "description": "name of the user"
+          }
+        }
+      },
+      "MqttReviewModel": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "filmId": { "type": "number" },
+          "reviewDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "number" },
+          "review": { "type": "string" },
+          "userId": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["created", "updated", "deleted"]
+          }
+        }
+      }
+    }
+  }
+}

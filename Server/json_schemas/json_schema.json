@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "DSP-lab1",
+  "title": "The First distributed system programming Lab",
+  "definitions": {
+    "_date": {
+      "type": "string",
+      "pattern": "^(19|20)[0-9]{2}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
+    },
+    "user": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "password": { "type": "string", "minLength": 6, "maxLength": 20 }
+      },
+      "required": ["id", "email"]
+    },
+    "film": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer" },
+        "title": { "type": "string" },
+        "owner": { "type": "integer" },
+        "private": { "type": "boolean", "default": true }
+      },
+      "if": {
+        "properties": { "private": { "const": true } }
+      },
+      "then": {
+        "properties": {
+          "watchDate": { "$ref": "#/definitions/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "favorite": { "type": "boolean", "default": false }
+        }
+      },
+      "required": ["id", "title", "owner", "private"]
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "filmId": { "type": "integer" },
+        "reviewerId": { "type": "integer" },
+        "completed": { "type": "boolean", "default": false }
+      },
+      "required": ["filmId", "reviewerId", "completed"],
+      "if": {
+        "properties": { "completed": {"const" : true} }
+      },
+      "then": {
+        "properties": {
+          "reviewDate": { "$ref": "#/definitions/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "review": { "type": "string", "maxLength": 1000 }
+        },
+        "required": ["reviewDate", "rating", "review"]
+      }
+    }
+  },
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/definitions/user" },
+          { "$ref": "#/definitions/film" },
+          { "$ref": "#/definitions/review" }
+        ]
+      }
+    }
+  }
+}

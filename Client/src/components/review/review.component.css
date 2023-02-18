@@ -1,0 +1,15 @@
+.review-section {
+  background: white;
+  width: 70%;
+  margin-top: 35px;
+  padding: 20px 10px;
+  border-radius: 15px;
+  box-shadow: 0px 2px 6px -2px;
+}
+
+.comment {
+  background: #efefef;
+  margin: 5px;
+  border-radius: 5px;
+  padding: 5px;
+}

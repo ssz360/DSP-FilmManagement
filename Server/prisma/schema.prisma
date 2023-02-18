@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                Int                @id @default(autoincrement())
+  name              String?
+  email             String             @unique
+  password          String
+  salt              String
+  films             Film[]
+  UsersActiveFilms  UsersActiveFilms[]
+  issuedInvitations Review[]           @relation("issuedBy")
+  invitedUsers      Review[]           @relation("invitedUser")
+  reviews           Review[]           @relation("reviews")
+}
+
+model Film {
+  id               Int                @id @default(autoincrement())
+  title            String
+  owner            User               @relation(fields: [ownerId], references: [id])
+  ownerId          Int
+  private          Boolean            @default(true)
+  watchDate        DateTime
+  rating           Int
+  favorite         Boolean            @default(false)
+  revirews         Review[]
+  Media            Media[]
+  UsersActiveFilms UsersActiveFilms[]
+}
+
+model Review {
+  id            Int       @id @default(autoincrement())
+  film          Film?     @relation(fields: [filmId], references: [id])
+  filmId        Int?
+  completed     Boolean   @default(false)
+  reviewDate    DateTime?
+  rating        Int?
+  review        String?
+  issuedById    Int?
+  issuedBy      User?     @relation(fields: [issuedById], references: [id], name: "issuedBy")
+  invitedUserId Int?
+  invitedUser   User?     @relation(fields: [invitedUserId], references: [id], name: "invitedUser")
+  User          User?     @relation(fields: [userId], references: [id], name: "reviews")
+  userId        Int?
+}
+
+model Media {
+  id     Int    @id @default(autoincrement())
+  type   String
+  name   String
+  film   Film   @relation(fields: [filmId], references: [id])
+  filmId Int
+}
+
+model UsersActiveFilms {
+  id     Int  @id @default(autoincrement())
+  film   Film @relation(fields: [filmId], references: [id])
+  filmId Int
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+}

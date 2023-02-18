@@ -1,0 +1,13 @@
+{
+  "$schema": "./json_schema.json",
+  "items": [
+    {
+      "filmId": 1,
+      "reviewerId": 5,
+      "completed": true,
+      "rating": 3,
+      "review": "test",
+      "reviewDate": "1998/05/21"
+    }
+  ]
+}

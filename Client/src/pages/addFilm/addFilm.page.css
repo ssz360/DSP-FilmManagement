@@ -1,0 +1,26 @@
+.film-img {
+  width: 200px;
+  margin: 5px;
+}
+.image-item__btn-wrapper {
+  text-align: center;
+}
+
+.image-item__btn-wrapper Button {
+  margin: 5px;
+}
+
+.image-item {
+  display: inline-block;
+  margin: 10px;
+}
+
+.image-item img {
+  border-radius: 5px;
+  box-shadow: 0 3px 5px -2px;
+}
+
+.two-btn-wrapper {
+  text-align: center;
+  margin: 10px;
+}

@@ -1,0 +1,12 @@
+.login {
+    max-width: 350px;
+    margin: 0 auto 20px;
+    border-radius: 4px;
+    background-color: #FFF;
+    padding: 20px;
+    box-sizing: border-box;
+    top: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}

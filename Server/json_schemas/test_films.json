@@ -1,0 +1,17 @@
+{
+  "$schema": "./json_schema.json",
+  "items": [
+    {
+      "id": 1,
+      "email": "test@ddd.cc",
+      "name": "user1",
+      "password": "123454"
+    },
+    {
+      "id": 2,
+      "email": "tt@test.tf",
+      "name": "user2",
+      "password": "521454"
+    }
+  ]
+}
