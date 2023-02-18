@@ -4,8 +4,7 @@ import Col from "react-bootstrap/Col";
 import DashboardSideMenuComponent from "../../components/dashboardSideMenu/dashboardSideMenu.component";
 import { useEffect, useState } from "react";
 import {
-  Film,
-  FilmsResponse,
+  FilmModel,
   MqttFilmActiveModel,
 } from "../../open_api_models/data-contracts";
 import Card from "react-bootstrap/Card";
@@ -19,8 +18,8 @@ import React from "react";
 let mqttSrv: MosquitoService;
 
 function ReviewedFilmsPage() {
-  const [films, setFilms] = useState<FilmsResponse>([]);
-  const [activeFilm, setActiveFilm] = useState<Film>();
+  const [films, setFilms] = useState<FilmModel[]>([]);
+  const [activeFilm, setActiveFilm] = useState<FilmModel>();
   const [messages, setMessages] = useState<
     {
       channel: string;
@@ -69,7 +68,7 @@ function ReviewedFilmsPage() {
     setActiveFilm(activeFilm);
   }
 
-  async function switchHandler(switchVal: boolean, film: Film) {
+  async function switchHandler(switchVal: boolean, film: FilmModel) {
     if (switchVal) {
       await filmApi
         .setMovieActive(film.id as any, { credentials: "include" })
@@ -140,7 +139,9 @@ function ReviewedFilmsPage() {
                       </Card.Text>
                       <div>
                         <div>Favorite: {film.favorite ? "True" : "False"}</div>
-                        <div>Is Private: {film.private ? "True" : "False"}</div>
+                        <div>
+                          Is Private: {film.isPrivate ? "True" : "False"}
+                        </div>
                         <div>Rating: {film.rating}</div>
                       </div>
                       <hr />

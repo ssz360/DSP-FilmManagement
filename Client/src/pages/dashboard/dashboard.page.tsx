@@ -7,8 +7,7 @@ import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Films } from "../../open_api_models/Films";
 import {
-  Film,
-  FilmsResponse,
+  FilmModel,
 } from "../../open_api_models/data-contracts";
 import { Modal } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -16,9 +15,9 @@ import "./dashboard.page.css";
 import React from "react";
 
 function DashboardPage() {
-  const [films, setFilms] = useState<FilmsResponse>([]);
+  const [films, setFilms] = useState<FilmModel[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedFilm, setSelectedFilm] = useState<Film>();
+  const [selectedFilm, setSelectedFilm] = useState<FilmModel>();
 
   useEffect(() => {
     getFilms();
@@ -31,12 +30,12 @@ function DashboardPage() {
     setFilms(yourFilms.data);
   }
 
-  function showModalHandler(film: Film) {
+  function showModalHandler(film: FilmModel) {
     setShowModal(true);
     setSelectedFilm(film);
   }
 
-  async function deleteHandler(film: Film) {
+  async function deleteHandler(film: FilmModel) {
     setShowModal(false);
     if (!film) return;
     await new Films().deleteFilm(film.id as any, {
@@ -69,7 +68,7 @@ function DashboardPage() {
                       </Card.Text>
                       <div>
                         <div>Favorite: {film.favorite ? "True" : "False"}</div>
-                        <div>Is Private: {film.private ? "True" : "False"}</div>
+                        <div>Is Private: {film.isPrivate ? "True" : "False"}</div>
                         <div>Rating: {film.rating}</div>
                       </div>
                       <Row className="btn-row">
@@ -91,7 +90,7 @@ function DashboardPage() {
                           </Button>
                         </Col>
                         <Col lg="8">
-                          {film.private ? (
+                          {film.isPrivate ? (
                             <></>
                           ) : (
                             <Link to={"/user/invite-user/" + film.id}>

@@ -1,0 +1,36 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "WebsocketMessageModel",
+    "title": "The Websocket Message Model",
+    "type": "object",
+    "properties": {
+      "typeMessage": {
+        "type": "string",
+        "description": "type of the message (the available types are login, logout, or update)",
+        "enum": [
+          "login",
+          "logout",
+          "update",
+          "snapshot_online",
+          "snapshot_activeFilms"
+        ]
+      },
+      "userId": {
+        "type": "integer",
+        "description": "identified of the user"
+      },
+      "userName": {
+        "type": "string",
+        "description": "name of the user"
+      },
+      "filmId": {
+        "type": "integer",
+        "description": "identified of the film"
+      },
+      "taskName": {
+        "type": "string",
+        "description": "title of the film"
+      }
+    }
+  }
+  

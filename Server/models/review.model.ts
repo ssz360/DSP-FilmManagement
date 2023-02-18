@@ -3,7 +3,6 @@ import FilmModel from "./film.model";
 
 class ReviewModel {
   id!: number;
-  film?: FilmModel;
   filmId!: number;
   completed: boolean = false;
   reviewDate!: Date;

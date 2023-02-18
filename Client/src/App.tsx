@@ -13,6 +13,7 @@ import DashboardPage from "./pages/dashboard/dashboard.page";
 import MainPage from "./pages/main/main.page";
 import { useEffect, useState } from "react";
 import { User } from "./open_api_models/User";
+import { UserModel } from "./open_api_models/data-contracts";
 import {
   getGlobalUser,
   setGlobalUser,
@@ -23,7 +24,6 @@ import {
 } from "./global/variables.global";
 import {
   InvitationModel,
-  LoginResponse,
   WebsocketMessageModel,
 } from "./open_api_models/data-contracts";
 import { subscribeEvent, unsubscribeEvent } from "./services/event.service";
@@ -44,7 +44,7 @@ import React from "react";
 let websocket: WebsocketService;
 
 function App() {
-  const [user, setUser] = useState<LoginResponse>();
+  const [user, setUser] = useState<UserModel>();
   const [invitations, setInvitations] = useState<InvitationModel[]>();
   let userApi = new User();
   const invitationApi = new Invitation();
@@ -112,13 +112,13 @@ function App() {
       userApi.getIfUserLoggedIn({ credentials: "include" }).then((res) => {
         const { isLoggedIn, user } = res.data;
         if (isLoggedIn) {
-          setGlobalUser(user as LoginResponse);
+          setGlobalUser(user);
         }
       });
     }
   }
 
-  function whenUserLoggedIn(user: LoginResponse) {
+  function whenUserLoggedIn(user: UserModel) {
     setUser(user);
   }
 
@@ -139,10 +139,10 @@ function App() {
     <div className="App">
       <BrowserRouter>
         {invitations?.map((invitation) => {
-          if (!invitation.done) {
+          if (!invitation.completed) {
             return (
               <Alert className="invitation-alert" key={invitation.id} variant="warning">
-                {invitation.issuer?.name} invited you to review{" "}
+                {invitation.invitedUser?.name} invited you to review{" "}
                 {invitation.film?.title}{" "}
                 <Link to={"/film/" + invitation.filmId + "#review"}>
                   write a review

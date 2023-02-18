@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import { useEffect, useState } from "react";
 import { Films } from "../../open_api_models/Films";
 import { useNavigate, useParams } from "react-router-dom";
-import { Film } from "../../open_api_models/data-contracts";
+import { FilmModel } from "../../open_api_models/data-contracts";
 import React from "react";
 
 function EditFilmPage() {
@@ -15,7 +15,7 @@ function EditFilmPage() {
   const [rating, setRating] = useState<number>(0);
   const [watchDate, setWatchDate] = useState("2022-12-16");
   const [favorite, setFavorite] = useState<boolean>(false);
-  const [film, setFilm] = useState<Film>();
+  const [film, setFilm] = useState<FilmModel>();
 
   const navigation = useNavigate();
 

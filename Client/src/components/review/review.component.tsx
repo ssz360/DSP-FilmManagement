@@ -6,11 +6,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Reviews } from "../../open_api_models/Reviews";
 import {
-  LoginResponse,
   MqttFilmActiveModel,
   MqttReviewModel,
-  Review,
-  SubmitReviewResponse,
+  ReviewModel,
+  UserModel,
 } from "../../open_api_models/data-contracts";
 
 import "./review.component.css";
@@ -21,13 +20,13 @@ import React from "react";
 let mqttSrv: MosquitoService;
 
 function ReviewFilmComponent(props: any) {
-  const [comments, setComments] = useState<SubmitReviewResponse[]>([]);
+  const [comments, setComments] = useState<ReviewModel[]>([]);
   const [rating, setRating] = useState<number>(0);
   const [reviewDate, setReviewDate] = useState("2022-12-16");
   const [review, setReview] = useState<string>("");
-  const [user, setUser] = useState<LoginResponse>();
+  const [user, setUser] = useState<UserModel>();
   const [showModal, setShowModal] = useState(false);
-  const [selectedReview, setSelectedReview] = useState<Review>();
+  const [selectedReview, setSelectedReview] = useState<ReviewModel>();
   const [editMode, setEditMode] = useState<boolean>();
 
   const navigation = useNavigate();
@@ -85,7 +84,7 @@ function ReviewFilmComponent(props: any) {
     setReviewDate("2022-12-16");
     setEditMode(false);
   }
-  function showModalHandler(review: Review) {
+  function showModalHandler(review: ReviewModel) {
     setShowModal(true);
     setSelectedReview(review);
   }
@@ -97,7 +96,7 @@ function ReviewFilmComponent(props: any) {
     setShowModal(false);
   }
 
-  function selectedForEdit(review: Review) {
+  function selectedForEdit(review: ReviewModel) {
     setSelectedReview(review);
 
     setRating(review.rating as any);
@@ -131,7 +130,7 @@ function ReviewFilmComponent(props: any) {
     setComments((comments) => {
       const result: MqttReviewModel = JSON.parse(message.toString());
       
-      const review:SubmitReviewResponse = comments.find((x) => x.id === result.id) as SubmitReviewResponse;
+      const review:ReviewModel = comments.find((x) => x.id === result.id);
       if (result.status === "updated") {
 
         review.rating = result.rating;
@@ -153,7 +152,7 @@ function ReviewFilmComponent(props: any) {
 
   return (
     <Container className="review-section">
-      {comments.map((comment: SubmitReviewResponse) => {
+      {comments.map((comment) => {
         return (
           <Row className="comment">
             <Col lg={3}>

@@ -43,7 +43,7 @@ class FilmApi {
       this.authService.isLoggedIn,
       async (req: Request, res: Response) => {
         try {
-          const { title, watchDate, rating, favorite, isPrivate, images } =
+          const { title, watchDate, rating, favorite, isPrivate, medias } =
             req.body;
 
           if (!title) {
@@ -63,7 +63,7 @@ class FilmApi {
 
           var result = await this.dal.createNew(film, user.id);
 
-          for (let img of images) {
+          for (let img of medias) {
             let imgPath = path.resolve(__dirname, "../", "images", img.name);
 
             var base64Data = img.data

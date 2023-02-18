@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "Review Model",
+  "title": "Review Model",
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "filmId": { "type": "integer" },
+    "issuedById": { "type": "integer" },
+    "invitedUserId": { "type": "integer" },
+    "completed": { "type": "boolean", "default": false },
+    "reviewDate": { "$ref": "date.schema.json" },
+    "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+    "review": { "type": "string", "maxLength": 1000 },
+    "userId": { "type": "integer" }
+  }
+}

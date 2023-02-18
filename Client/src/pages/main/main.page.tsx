@@ -3,16 +3,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DashboardSideMenuComponent from "../../components/dashboardSideMenu/dashboardSideMenu.component";
 import { useEffect, useState } from "react";
-import {
-  FilmsResponse,
-} from "../../open_api_models/data-contracts";
+import { FilmModel } from "../../open_api_models/data-contracts";
 import Card from "react-bootstrap/Card";
 import { Films } from "../../open_api_models/Films";
 import React from "react";
 
 
 function MainPage() {
-  const [films, setFilms] = useState<FilmsResponse>([]);
+  const [films, setFilms] = useState<FilmModel[]>([]);
 
   useEffect(() => {
     getFilms();
@@ -45,7 +43,7 @@ function MainPage() {
                       </Card.Text>
                       <div>
                         <div>Favorite: {e.favorite ? "True" : "False"}</div>
-                        <div>Is Private: {e.private ? "True" : "False"}</div>
+                        <div>Is Private: {e.isPrivate ? "True" : "False"}</div>
                         <div>Rating: {e.rating}</div>
                       </div>
                     </Card.Body>

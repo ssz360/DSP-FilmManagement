@@ -136,7 +136,16 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/issueInvitationRequest"
+                "type": "object",
+                "properties": {
+                  "filmId": { "type": "integer" },
+                  "invitedUserId": {
+                    "type": "array",
+                    "items": {
+                      "type": "number"
+                    }
+                  }
+                }
               }
             }
           }
@@ -220,7 +229,7 @@
                   "type": "object",
                   "properties": {
                     "isLoggedIn": { "type": "boolean" },
-                    "user": { "$ref": "#/components/schemas/loginResponse" }
+                    "user": { "$ref": "#/components/schemas/userModel" }
                   }
                 }
               }
@@ -237,7 +246,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/loginRequest"
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "pattern": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": ["email", "password"]
               }
             }
           }
@@ -248,7 +267,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/loginResponse"
+                  "$ref": "#/components/schemas/userModel"
                 }
               }
             }
@@ -274,7 +293,23 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/registerRequest"
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "passwordConfirmation": { "type": "string" },
+                  "name": { "type": "string" }
+                },
+                "required": [
+                  "email",
+                  "password",
+                  "passwordConfirmation",
+                  "name"
+                ]
               }
             }
           }
@@ -296,7 +331,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/filmsResponse"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/filmModel"
+                  },
+                  "example": "[{\"id\":0,\"title\":\"Film 1\",\"ownerId\":3,\"isPrivate\":true,\"watchDate\":\"2022-12-30T00:00:00.000Z\",\"rating\":2,\"favorite\":false},{\"id\":1,\"title\":\"Film 3\",\"ownerId\":3,\"isPrivate\":true,\"watchDate\":\"2022-12-13T00:00:00.000Z\",\"rating\":3,\"favorite\":false}]"
                 }
               }
             }
@@ -310,7 +350,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/createFilmRequest"
+                "$ref": "#/components/schemas/filmModel"
               }
             }
           }
@@ -321,7 +361,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/createFilmResponse"
+                  "$ref": "#/components/schemas/filmModel"
                 }
               }
             }
@@ -338,7 +378,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/filmResponse"
+                  "$ref": "#/components/schemas/filmModel"
                 }
               }
             }
@@ -379,7 +419,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/createFilmRequest"
+                "$ref": "#/components/schemas/filmModel"
               }
             }
           }
@@ -390,7 +430,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/filmResponse"
+                  "$ref": "#/components/schemas/filmModel"
                 }
               }
             }
@@ -435,7 +475,12 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/filmsResponse"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/filmModel"
+                  },
+                  "example": "[{\"id\":0,\"title\":\"Film 1\",\"ownerId\":3,\"isPrivate\":true,\"watchDate\":\"2022-12-30T00:00:00.000Z\",\"rating\":2,\"favorite\":false},{\"id\":1,\"title\":\"Film 3\",\"ownerId\":3,\"isPrivate\":true,\"watchDate\":\"2022-12-13T00:00:00.000Z\",\"rating\":3,\"favorite\":false}]"
                 }
               }
             }
@@ -451,7 +496,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/submitReviewRequest"
+                "$ref": "#/components/schemas/reviewModel"
               }
             }
           }
@@ -462,7 +507,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/submitReviewResponse"
+                  "$ref": "#/components/schemas/reviewModel"
                 }
               }
             }
@@ -505,7 +550,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/submitReviewRequest"
+                "$ref": "#/components/schemas/reviewModel"
               }
             }
           }
@@ -516,7 +561,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/submitReviewResponse"
+                  "$ref": "#/components/schemas/reviewModel"
                 }
               }
             }
@@ -533,7 +578,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/reviewsResponse"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "$ref": "#/components/schemas/reviewModel"
+                  }
                 }
               }
             }
@@ -544,19 +593,10 @@
   },
   "components": {
     "schemas": {
-      "issueInvitationRequest": {
-        "type": "object",
-        "properties": {
-          "filmId": { "type": "integer" },
-          "invitedUserId": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          }
-        }
+      "_date": {
+        "type": "string",
+        "pattern": "^(19|20)[0-9]{2}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
       },
-
       "invitationModel": {
         "type": "object",
         "properties": {
@@ -564,142 +604,19 @@
           "filmId": { "type": "integer" },
           "issuedById": { "type": "integer" },
           "invitedUserId": { "type": "integer" },
-          "issuer": {
+          "issuedBy": {
             "$ref": "#/components/schemas/userModel"
           },
-          "reviewer": {
+          "invitedUser": {
             "$ref": "#/components/schemas/userModel"
           },
           "film": {
-            "$ref": "#/components/schemas/film"
+            "$ref": "#/components/schemas/filmModel"
           },
-          "done": {
+          "completed": {
             "type": "boolean"
           }
         }
-      },
-      "reviewsResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "$ref": "#/components/schemas/submitReviewRequest"
-        }
-      },
-      "submitReviewRequest": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer" },
-          "filmId": { "type": "integer" },
-          "completed": { "type": "boolean", "default": false },
-          "reviewDate": { "$ref": "#/components/schemas/_date" },
-          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
-          "review": { "type": "string", "maxLength": 1000 },
-          "issuedById": { "type": "integer" }
-        }
-      },
-      "submitReviewResponse": {
-        "type": "object",
-        "properties": {
-          "filmId": { "type": "integer" },
-          "issuedById": { "type": "integer" },
-          "completed": { "type": "boolean", "default": false },
-          "reviewDate": { "$ref": "#/components/schemas/_date" },
-          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
-          "review": { "type": "string", "maxLength": 1000 },
-          "id": { "type": "integer" },
-          "userId": { "type": "integer" }
-        }
-      },
-      "filmResponse": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "number" },
-          "title": { "type": "string" },
-          "ownerId": { "type": "number" },
-          "private": { "type": "boolean" },
-          "watchDate": { "$ref": "#/components/schemas/_date" },
-          "rating": { "type": "number" },
-          "favorite": { "type": "boolean" }
-        },
-        "example": "{\"id\":0,\"title\":\"Film 1\",\"ownerId\":3,\"private\":true,\"watchDate\":\"2022-12-30T00:00:00.000Z\",\"rating\":2,\"favorite\":false}"
-      },
-      "filmsResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "$ref": "#/components/schemas/filmResponse"
-        },
-        "example": "[{\"id\":0,\"title\":\"Film 1\",\"ownerId\":3,\"private\":true,\"watchDate\":\"2022-12-30T00:00:00.000Z\",\"rating\":2,\"favorite\":false},{\"id\":1,\"title\":\"Film 3\",\"ownerId\":3,\"private\":true,\"watchDate\":\"2022-12-13T00:00:00.000Z\",\"rating\":3,\"favorite\":false}]"
-      },
-      "createFilmRequest": {
-        "type": "object",
-        "properties": {
-          "title": { "type": "string" },
-          "isPrivate": { "type": "boolean", "default": true },
-          "watchDate": { "$ref": "#/components/schemas/_date" },
-          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
-          "favorite": { "type": "boolean", "default": false },
-          "images": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "data": { "type": "string" },
-                "name": { "type": "string" }
-              }
-            }
-          }
-        }
-      },
-      "createFilmResponse": {
-        "type": "object",
-        "properties": {
-          "title": { "type": "string" },
-          "private": { "type": "boolean", "default": true },
-          "watchDate": { "$ref": "#/components/schemas/_date" },
-          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
-          "favorite": { "type": "boolean", "default": false },
-          "ownerId": { "type": "number" }
-        }
-      },
-      "loginResponse": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "number" },
-          "name": { "type": "string" },
-          "email": { "type": "string", "pattern": "email" }
-        }
-      },
-      "loginRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "pattern": "email"
-          },
-          "password": {
-            "type": "string"
-          }
-        },
-        "required": ["email", "password"]
-      },
-      "registerRequest": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "password": {
-            "type": "string"
-          },
-          "passwordConfirmation": { "type": "string" },
-          "name": { "type": "string" }
-        },
-        "required": ["email", "password", "passwordConfirmation", "name"]
-      },
-      "_date": {
-        "type": "string",
-        "pattern": "^(19|20)[0-9]{2}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
       },
       "userModel": {
         "type": "object",
@@ -710,25 +627,37 @@
           "password": { "type": "string", "minLength": 6, "maxLength": 20 }
         }
       },
-      "film": {
+      "filmModel": {
         "type": "object",
         "properties": {
           "id": { "type": "integer" },
           "title": { "type": "string" },
           "ownerId": { "type": "integer" },
-          "private": { "type": "boolean", "default": true },
+          "isPrivate": { "type": "boolean", "default": true },
           "watchDate": { "$ref": "#/components/schemas/_date" },
           "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
           "favorite": { "type": "boolean", "default": false },
           "medias": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/media"
+              "$ref": "#/components/schemas/mediaModel"
+            }
+          },
+          "filmReviews": {
+            "type": "object",
+            "properties": {
+              "href": { "type": "string" }
+            }
+          },
+          "self": {
+            "type": "object",
+            "properties": {
+              "href": { "type": "string" }
             }
           }
         }
       },
-      "media": {
+      "mediaModel": {
         "type": "object",
         "properties": {
           "id": { "type": "integer" },
@@ -737,7 +666,7 @@
           "filmId": { "type": "integer" }
         }
       },
-      "review": {
+      "reviewModel": {
         "type": "object",
         "properties": {
           "id": { "type": "integer" },

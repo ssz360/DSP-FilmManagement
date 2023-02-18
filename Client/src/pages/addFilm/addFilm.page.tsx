@@ -32,7 +32,7 @@ function AddFilmPage() {
           rating,
           title,
           watchDate,
-          images: images.map((x: any) => {
+          medias: images.map((x: any) => {
             return { data: x.data_url,name:x.file.name };
           }),
         },

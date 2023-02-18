@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "MqttReviewModel",
+    "title": "The Mqtt Review Model",
+    "type": "object",
+    "properties": {
+      "id": { "type": "number" },
+      "filmId": { "type": "number" },
+      "reviewDate": { "$ref": "date.schema.json" },
+      "rating": { "type": "number" },
+      "review": { "type": "string" },
+      "userId": { "type": "number" },
+      "status": {
+        "type": "string",
+        "enum": ["created", "updated", "deleted"]
+      }
+    }
+  }
+  

@@ -40,11 +40,11 @@ function UserInvitationsPage() {
           {invitations?.map((invitation) => (
             <Row key={invitation.id}>
               <Col>
-                {invitation.reviewer?.name} is invited for
+                {invitation.invitedUser?.name} is invited for
                 {invitation.film?.title}
               </Col>
               <Col>
-                {invitation.done ? (
+                {invitation.completed ? (
                   <></>
                 ) : (
                   <Button

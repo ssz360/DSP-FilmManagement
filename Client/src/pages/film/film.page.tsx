@@ -3,20 +3,16 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { Films } from "../../open_api_models/Films";
 import { useParams } from "react-router-dom";
-import {
-  Film,
-  LoginResponse,
-} from "../../open_api_models/data-contracts";
+import { FilmModel, UserModel } from "../../open_api_models/data-contracts";
 import "./film.page.css";
 import ReviewFilmComponent from "../../components/review/review.component";
 import { getGlobalUser } from "../../global/variables.global";
 import { Gprc } from "../../open_api_models/Gprc";
 import React from "react";
 
-
 function FilmPage() {
-  const [film, setFilm] = useState<Film>();
-  const [user, setUser] = useState<LoginResponse>();
+  const [film, setFilm] = useState<FilmModel>();
+  const [user, setUser] = useState<UserModel>();
   const [movie, setMovie] = useState<any>();
 
   let { id } = useParams();
@@ -25,7 +21,6 @@ function FilmPage() {
   useEffect(() => {
     getData();
     setUser(getGlobalUser());
-
   }, []);
 
   async function getData() {

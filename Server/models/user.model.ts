@@ -6,7 +6,6 @@ class UserModel {
   email!: string;
   password?: string;
   salt?: string;
-  films: FilmModel[] = [];
 }
 
 

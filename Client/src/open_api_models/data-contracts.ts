@@ -9,126 +9,19 @@
  * ---------------------------------------------------------------
  */
 
-export interface IssueInvitationRequest {
-  filmId?: number;
-  invitedUserId?: number[];
-}
+/** @pattern ^(19|20)[0-9]{2}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$ */
+export type Date = string;
 
 export interface InvitationModel {
   id?: number;
   filmId?: number;
   issuedById?: number;
   invitedUserId?: number;
-  issuer?: UserModel;
-  reviewer?: UserModel;
-  film?: Film;
-  done?: boolean;
-}
-
-export type ReviewsResponse = SubmitReviewRequest[];
-
-export interface SubmitReviewRequest {
-  id?: number;
-  filmId?: number;
-  /** @default false */
+  issuedBy?: UserModel;
+  invitedUser?: UserModel;
+  film?: FilmModel;
   completed?: boolean;
-  reviewDate?: Date;
-  /**
-   * @min 0
-   * @max 10
-   */
-  rating?: number;
-  /** @maxLength 1000 */
-  review?: string;
-  issuedById?: number;
 }
-
-export interface SubmitReviewResponse {
-  filmId?: number;
-  issuedById?: number;
-  /** @default false */
-  completed?: boolean;
-  reviewDate?: Date;
-  /**
-   * @min 0
-   * @max 10
-   */
-  rating?: number;
-  /** @maxLength 1000 */
-  review?: string;
-  id?: number;
-  userId?: number;
-}
-
-/** @example "{"id":0,"title":"Film 1","ownerId":3,"private":true,"watchDate":"2022-12-30T00:00:00.000Z","rating":2,"favorite":false}" */
-export interface FilmResponse {
-  id?: number;
-  title?: string;
-  ownerId?: number;
-  private?: boolean;
-  watchDate?: Date;
-  rating?: number;
-  favorite?: boolean;
-}
-
-/** @example "[{"id":0,"title":"Film 1","ownerId":3,"private":true,"watchDate":"2022-12-30T00:00:00.000Z","rating":2,"favorite":false},{"id":1,"title":"Film 3","ownerId":3,"private":true,"watchDate":"2022-12-13T00:00:00.000Z","rating":3,"favorite":false}]" */
-export type FilmsResponse = FilmResponse[];
-
-export interface CreateFilmRequest {
-  title?: string;
-  /** @default true */
-  isPrivate?: boolean;
-  watchDate?: Date;
-  /**
-   * @min 0
-   * @max 10
-   */
-  rating?: number;
-  /** @default false */
-  favorite?: boolean;
-  images?: {
-    data?: string;
-    name?: string;
-  }[];
-}
-
-export interface CreateFilmResponse {
-  title?: string;
-  /** @default true */
-  private?: boolean;
-  watchDate?: Date;
-  /**
-   * @min 0
-   * @max 10
-   */
-  rating?: number;
-  /** @default false */
-  favorite?: boolean;
-  ownerId?: number;
-}
-
-export interface LoginResponse {
-  id?: number;
-  name?: string;
-  /** @pattern email */
-  email?: string;
-}
-
-export interface LoginRequest {
-  /** @pattern email */
-  email: string;
-  password: string;
-}
-
-export interface RegisterRequest {
-  email: string;
-  password: string;
-  passwordConfirmation: string;
-  name: string;
-}
-
-/** @pattern ^(19|20)[0-9]{2}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$ */
-export type Date = string;
 
 export interface UserModel {
   id?: number;
@@ -142,12 +35,12 @@ export interface UserModel {
   password?: string;
 }
 
-export interface Film {
+export interface FilmModel {
   id?: number;
   title?: string;
   ownerId?: number;
   /** @default true */
-  private?: boolean;
+  isPrivate?: boolean;
   watchDate?: Date;
   /**
    * @min 0
@@ -156,17 +49,23 @@ export interface Film {
   rating?: number;
   /** @default false */
   favorite?: boolean;
-  medias?: Media[];
+  medias?: MediaModel[];
+  filmReviews?: {
+    href?: string;
+  };
+  self?: {
+    href?: string;
+  };
 }
 
-export interface Media {
+export interface MediaModel {
   id?: number;
   type?: string;
   name?: string;
   filmId?: number;
 }
 
-export interface Review {
+export interface ReviewModel {
   id?: number;
   filmId?: number;
   issuedById?: number;

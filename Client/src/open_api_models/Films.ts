@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { CreateFilmRequest, CreateFilmResponse, FilmResponse, FilmsResponse } from "./data-contracts";
+import { FilmModel } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
 export class Films<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
@@ -20,7 +20,7 @@ export class Films<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
    * @request GET:/films
    */
   getFilms = (params: RequestParams = {}) =>
-    this.request<FilmsResponse, any>({
+    this.request<FilmModel[], any>({
       path: `/films`,
       method: "GET",
       format: "json",
@@ -32,8 +32,8 @@ export class Films<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
    * @name CreateNewFilm
    * @request POST:/films
    */
-  createNewFilm = (data: CreateFilmRequest, params: RequestParams = {}) =>
-    this.request<CreateFilmResponse, any>({
+  createNewFilm = (data: FilmModel, params: RequestParams = {}) =>
+    this.request<FilmModel, any>({
       path: `/films`,
       method: "POST",
       body: data,
@@ -48,7 +48,7 @@ export class Films<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
    * @request GET:/films/:id
    */
   getFilmsById = (id: string, params: RequestParams = {}) =>
-    this.request<FilmResponse, any>({
+    this.request<FilmModel, any>({
       path: `/films/${id}`,
       method: "GET",
       format: "json",
@@ -73,8 +73,8 @@ export class Films<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
    * @name UpdateFilm
    * @request PUT:/films/:id
    */
-  updateFilm = (id: string, data: CreateFilmRequest, params: RequestParams = {}) =>
-    this.request<FilmResponse, any>({
+  updateFilm = (id: string, data: FilmModel, params: RequestParams = {}) =>
+    this.request<FilmModel, any>({
       path: `/films/${id}`,
       method: "PUT",
       body: data,
@@ -102,7 +102,7 @@ export class Films<SecurityDataType = unknown> extends HttpClient<SecurityDataTy
    * @request GET:/films/yourFilms
    */
   getYourFilms = (params: RequestParams = {}) =>
-    this.request<FilmsResponse, any>({
+    this.request<FilmModel[], any>({
       path: `/films/yourFilms`,
       method: "GET",
       format: "json",

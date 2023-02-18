@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { ReviewsResponse, SubmitReviewRequest, SubmitReviewResponse } from "./data-contracts";
+import { ReviewModel } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
 export class Reviews<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
@@ -19,8 +19,8 @@ export class Reviews<SecurityDataType = unknown> extends HttpClient<SecurityData
    * @name SubmitNewReview
    * @request POST:/reviews
    */
-  submitNewReview = (data: SubmitReviewRequest, params: RequestParams = {}) =>
-    this.request<SubmitReviewResponse, any>({
+  submitNewReview = (data: ReviewModel, params: RequestParams = {}) =>
+    this.request<ReviewModel, any>({
       path: `/reviews`,
       method: "POST",
       body: data,
@@ -47,8 +47,8 @@ export class Reviews<SecurityDataType = unknown> extends HttpClient<SecurityData
    * @name UpdateReview
    * @request PUT:/reviews/:id
    */
-  updateReview = (id: string, data: SubmitReviewRequest, params: RequestParams = {}) =>
-    this.request<SubmitReviewResponse, any>({
+  updateReview = (id: string, data: ReviewModel, params: RequestParams = {}) =>
+    this.request<ReviewModel, any>({
       path: `/reviews/${id}`,
       method: "PUT",
       body: data,
@@ -63,7 +63,7 @@ export class Reviews<SecurityDataType = unknown> extends HttpClient<SecurityData
    * @request GET:/reviews/film/:filmId
    */
   getReviewByFilmId = (filmId: string, params: RequestParams = {}) =>
-    this.request<ReviewsResponse, any>({
+    this.request<ReviewModel[], any>({
       path: `/reviews/film/${filmId}`,
       method: "GET",
       format: "json",

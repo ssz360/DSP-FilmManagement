@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { InvitationModel, IssueInvitationRequest } from "./data-contracts";
+import { InvitationModel } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
 export class Invitation<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
@@ -45,7 +45,13 @@ export class Invitation<SecurityDataType = unknown> extends HttpClient<SecurityD
    * @name IssueNewInvitation
    * @request POST:/invitation
    */
-  issueNewInvitation = (data: IssueInvitationRequest, params: RequestParams = {}) =>
+  issueNewInvitation = (
+    data: {
+      filmId?: number;
+      invitedUserId?: number[];
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<InvitationModel[], any>({
       path: `/invitation`,
       method: "POST",

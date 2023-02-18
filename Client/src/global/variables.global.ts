@@ -1,17 +1,17 @@
 import { userChanged } from "../services/event.service";
 import {
-  LoginResponse,
+  UserModel,
   WebsocketMessageModel,
 } from "../open_api_models/data-contracts";
 
 // const dataChanged = new Event('dataChanged');
 
-let user: LoginResponse | undefined = undefined;
+let user: UserModel | undefined = undefined;
 
 export function getGlobalUser() {
   return user;
 }
-export function setGlobalUser(_user: LoginResponse | undefined) {
+export function setGlobalUser(_user: UserModel | undefined) {
   user = _user;
   userChanged(user);
 }

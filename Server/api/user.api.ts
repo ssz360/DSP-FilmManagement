@@ -81,8 +81,7 @@ class UserApi {
             password: password,
             email: email,
             name: name,
-            salt: "",
-            films: [],
+            salt: ""
           };
           const result = await this.dal.addNew(newUser);
           if (result.id) {

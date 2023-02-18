@@ -1,4 +1,5 @@
-import { Film } from "@prisma/client";
+import { Film } from './../../Client/src/open_api_models/data-contracts';
+import { Film as DbFilm } from "@prisma/client";
 import MediaModel from "./media.model";
 import ReviewModel from "./review.model";
 import UserModel from "./user.model";
@@ -6,14 +7,11 @@ import UserModel from "./user.model";
 class FilmModel {
   id!: number;
   title!: string;
-  owner!: UserModel;
   ownerId!: number;
   private: boolean = true;
   watchDate!: Date;
   rating!: number;
   favorite: boolean = false;
-  reviews!: ReviewModel[];
-  imagesBase64!: string[];
   medias!: MediaModel[];
   self?: object;
   filmReviews?: object;
@@ -21,11 +19,11 @@ class FilmModel {
     if (id) {
       this.id = id as any;
       this.self = { href: "/api/films/" + this.id };
-      this.filmReviews = { href: `/api/films/${this.id}/reviews` };
+      this.filmReviews = { href: `/api/reviews/film/${this.id}` };
     }
   }
 
-  static convertFromFilmDb(dbFilm: Film, medias?: MediaModel[]): FilmModel {
+  static convertFromFilmDb(dbFilm: DbFilm, medias?: MediaModel[]): FilmModel {
     let resultFilm = new FilmModel(dbFilm.id);
     resultFilm.id = dbFilm.id;
     resultFilm.favorite = dbFilm.favorite;

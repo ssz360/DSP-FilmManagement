@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { LoginRequest, LoginResponse, RegisterRequest, UserModel } from "./data-contracts";
+import { UserModel } from "./data-contracts";
 import { ContentType, HttpClient, RequestParams } from "./http-client";
 
 export class User<SecurityDataType = unknown> extends HttpClient<SecurityDataType> {
@@ -36,7 +36,7 @@ export class User<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
     this.request<
       {
         isLoggedIn?: boolean;
-        user?: LoginResponse;
+        user?: UserModel;
       },
       any
     >({
@@ -51,8 +51,15 @@ export class User<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
    * @name Login
    * @request POST:/user/login
    */
-  login = (data: LoginRequest, params: RequestParams = {}) =>
-    this.request<LoginResponse, any>({
+  login = (
+    data: {
+      /** @pattern email */
+      email: string;
+      password: string;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<UserModel, any>({
       path: `/user/login`,
       method: "POST",
       body: data,
@@ -78,7 +85,15 @@ export class User<SecurityDataType = unknown> extends HttpClient<SecurityDataTyp
    * @name Register
    * @request POST:/user/register
    */
-  register = (data: RegisterRequest, params: RequestParams = {}) =>
+  register = (
+    data: {
+      email: string;
+      password: string;
+      passwordConfirmation: string;
+      name: string;
+    },
+    params: RequestParams = {},
+  ) =>
     this.request<void, any>({
       path: `/user/register`,
       method: "POST",

@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "FilmModel",
+  "title": "The Film Model",
+  "type": "object",
+  "properties": {
+    "id": { "type": "integer" },
+    "title": { "type": "string" },
+    "ownerId": { "type": "integer" },
+    "isPrivate": { "type": "boolean", "default": true },
+    "watchDate": { "$ref": "date.schema.json" },
+    "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+    "favorite": { "type": "boolean", "default": false },
+    "medias": {
+      "type": "array",
+      "items": {
+        "$ref": "mediaModel.schema.json"
+      }
+    },
+    "filmReviews": {
+      "type": "object",
+      "properties": {
+        "href": { "type": "string" }
+      }
+    },
+    "self": {
+      "type": "object",
+      "properties": {
+        "href": { "type": "string" }
+      }
+    }
+  }
+}

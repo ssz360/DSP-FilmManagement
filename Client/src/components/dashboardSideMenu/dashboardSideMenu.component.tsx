@@ -1,13 +1,13 @@
 import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { LoginResponse } from "../../open_api_models/data-contracts";
 import { getGlobalUser } from "../../global/variables.global";
 import SidebarOnlineUsersComponent from "../sidebarOnlineUsers/sidebarOnlineUsers.component";
 import React from "react";
+import { UserModel } from "../../open_api_models/data-contracts";
 
 function DashboardSideMenuComponent() {
-  const [user, setUser] = useState<LoginResponse>();
+  const [user, setUser] = useState<UserModel>();
 
   useEffect(() => {
     setUser(getGlobalUser());
