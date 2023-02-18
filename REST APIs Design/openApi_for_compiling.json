@@ -594,31 +594,156 @@
   "components": {
     "schemas": {
       "_date": {
-        "$ref": "../Server/json_schemas/date.schema.json"
+        "type": "string",
+        "pattern": "^(19|20)[0-9]{2}[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$"
       },
       "invitationModel": {
-        "$ref": "../Server/json_schemas/invitationModel.schema.json"
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "filmId": { "type": "integer" },
+          "issuedById": { "type": "integer" },
+          "invitedUserId": { "type": "integer" },
+          "issuedBy": {
+            "$ref": "#/components/schemas/userModel"
+          },
+          "invitedUser": {
+            "$ref": "#/components/schemas/userModel"
+          },
+          "film": {
+            "$ref": "#/components/schemas/filmModel"
+          },
+          "completed": {
+            "type": "boolean"
+          }
+        }
       },
       "userModel": {
-        "$ref": "../Server/json_schemas/userModel.schema.json"
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" },
+          "password": { "type": "string", "minLength": 6, "maxLength": 20 }
+        }
       },
       "filmModel": {
-        "$ref": "../Server/json_schemas/filmModel.schema.json"
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "title": { "type": "string" },
+          "ownerId": { "type": "integer" },
+          "isPrivate": { "type": "boolean", "default": true },
+          "watchDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "favorite": { "type": "boolean", "default": false },
+          "medias": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/mediaModel"
+            }
+          },
+          "filmReviews": {
+            "type": "object",
+            "properties": {
+              "href": { "type": "string" }
+            }
+          },
+          "self": {
+            "type": "object",
+            "properties": {
+              "href": { "type": "string" }
+            }
+          }
+        }
       },
       "mediaModel": {
-        "$ref": "../Server/json_schemas/mediaModel.schema.json"
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "type": { "type": "string" },
+          "name": { "type": "string" },
+          "filmId": { "type": "integer" }
+        }
       },
       "reviewModel": {
-        "$ref": "../Server/json_schemas/reviewModel.schema.json"
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "filmId": { "type": "integer" },
+          "issuedById": { "type": "integer" },
+          "invitedUserId": { "type": "integer" },
+          "completed": { "type": "boolean", "default": false },
+          "reviewDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "integer", "minimum": 0, "maximum": 10 },
+          "review": { "type": "string", "maxLength": 1000 },
+          "userId": { "type": "integer" }
+        }
       },
       "websocketMessageModel": {
-        "$ref": "../Server/json_schemas/websocketMessageModel.schema.json"
+        "type": "object",
+        "properties": {
+          "typeMessage": {
+            "type": "string",
+            "description": "type of the message (the available types are login, logout, or update)",
+            "enum": [
+              "login",
+              "logout",
+              "update",
+              "snapshot_online",
+              "snapshot_activeFilms"
+            ]
+          },
+          "userId": {
+            "type": "integer",
+            "description": "identified of the user"
+          },
+          "userName": {
+            "type": "string",
+            "description": "name of the user"
+          },
+          "filmId": {
+            "type": "integer",
+            "description": "identified of the film"
+          },
+          "taskName": {
+            "type": "string",
+            "description": "title of the film"
+          }
+        }
       },
       "MqttFilmActiveModel": {
-        "$ref": "../Server/json_schemas/mqttFilmActiveModel.schema.json"
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "description": "current condition of the film (the available types are active if it is selected by a user, inactive if it is not selected by any user, or deleted if it has been removed from the service)",
+            "enum": ["active", "inactive", "deleted"]
+          },
+          "userId": {
+            "type": "integer",
+            "description": "identifier of the user"
+          },
+          "userName": {
+            "type": "string",
+            "description": "name of the user"
+          }
+        }
       },
       "MqttReviewModel": {
-        "$ref": "../Server/json_schemas/mqttReviewModel.schema.json"
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "filmId": { "type": "number" },
+          "reviewDate": { "$ref": "#/components/schemas/_date" },
+          "rating": { "type": "number" },
+          "review": { "type": "string" },
+          "userId": { "type": "number" },
+          "status": {
+            "type": "string",
+            "enum": ["created", "updated", "deleted"]
+          }
+        }
       }
     }
   }

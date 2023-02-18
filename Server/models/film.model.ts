@@ -1,4 +1,3 @@
-import { Film } from './../../Client/src/open_api_models/data-contracts';
 import { Film as DbFilm } from "@prisma/client";
 import MediaModel from "./media.model";
 import ReviewModel from "./review.model";
