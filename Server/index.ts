@@ -14,7 +14,7 @@ import UserApi from "./api/user.api";
 import FilmApi from "./api/film.api";
 
 import swaggerUi from "swagger-ui-express";
-import swaggerDocument from "../schema/openApi/openApi.json";
+import swaggerDocument from "../REST APIs Design/openApi.json";
 
 import * as fs from "fs";
 import ReviewApi from "./api/review.api";
