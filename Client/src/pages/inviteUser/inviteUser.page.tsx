@@ -35,8 +35,8 @@ function InviteUserPage() {
   async function sendInvitationsHandler() {
     await invitationApi.issueNewInvitation(
       {
-        filmId: filmId as any,
-        invitedUserId: selectedUsers?.map((u) => u.id) as any,
+        filmId: +filmId as any,
+        invitedUserId: selectedUsers?.map((u) => +u.id) as any,
       },
       { credentials: "include" }
     );

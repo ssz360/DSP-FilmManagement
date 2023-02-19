@@ -1,11 +1,5 @@
 import { ConverterClient } from "./proto/conversion_grpc_pb";
-import {
-  ConversionReply,
-  ConversionRequest,
-  MetadataRequest,
-} from "./proto/conversion_pb";
 import express from "express";
-import { Request, Response } from "express";
 import passport from "passport";
 import session from "express-session";
 import cors from "cors";
@@ -16,12 +10,10 @@ import FilmApi from "./api/film.api";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../REST APIs Design/openApi.json";
 
-import * as fs from "fs";
 import ReviewApi from "./api/review.api";
 import InvitationApi from "./api/invitation.api";
 import path from "path";
 import GprcApi from "./api/gprc.api";
-import { WebSocketServer, WebSocket } from "ws";
 import WebsocketService from "./services/websocket.service";
 import { MosquitoService } from "./services/mosquito.service";
 import { ValidationError, Validator } from "express-json-validator-middleware";

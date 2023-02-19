@@ -117,7 +117,7 @@ class FilmApi {
       this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response) => {
         try {
-          const { title, watchDate, rating, favorite } = req.body;
+          const { title, watchDate, rating, favorite,medias } = req.body;
           const { id } = req.params;
 
           if (!title) {
@@ -135,6 +135,29 @@ class FilmApi {
           if (!user) throw new Error("User not found");
 
           var result = await this.dal.update(film, +id as any);
+
+
+          for (let img of medias) {
+            let imgPath = path.resolve(__dirname, "../", "images", img.name);
+
+            var base64Data = img.data
+              .replace(/^data:image\/png;base64,/, "")
+              .replace(/^data:image\/jpg;base64,/, "")
+              .replace(/^data:image\/jpeg;base64,/, "")
+              .replace(/^data:image\/gif;base64,/, "");
+            fs.writeFile(
+              imgPath,
+              base64Data,
+              { encoding: "base64" },
+              async (err: any) => {
+                if (!err) {
+                  const type = img.name.split(".")[1];
+                  await this.mediaDal.createNew(img.name, type, result.id);
+                }
+              }
+            );
+          }
+          
 
           return res.status(201).json(FilmModel.convertFromFilmDb(result));
         } catch (error: any) {

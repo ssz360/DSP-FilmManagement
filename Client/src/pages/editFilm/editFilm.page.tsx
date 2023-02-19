@@ -9,6 +9,7 @@ import { Films } from "../../open_api_models/Films";
 import { useNavigate, useParams } from "react-router-dom";
 import { FilmModel } from "../../open_api_models/data-contracts";
 import React from "react";
+import ImageUploading from "react-images-uploading";
 
 function EditFilmPage() {
   const [title, setTitle] = useState<string>("");
@@ -16,6 +17,9 @@ function EditFilmPage() {
   const [watchDate, setWatchDate] = useState("2022-12-16");
   const [favorite, setFavorite] = useState<boolean>(false);
   const [film, setFilm] = useState<FilmModel>();
+
+  const [images, setImages] = useState([]);
+  const maxNumber = 69;
 
   const navigation = useNavigate();
 
@@ -48,9 +52,12 @@ function EditFilmPage() {
         film?.id as any,
         {
           favorite,
-          rating,
+          rating:+rating,
           title,
           watchDate,
+          medias: images.map((x: any) => {
+            return { data: x.data_url, name: x.file.name };
+          }),
         },
         { credentials: "include" }
       )
@@ -59,6 +66,10 @@ function EditFilmPage() {
       });
   }
 
+  const onChange = (imageList: any, addUpdateIndex: any) => {
+    setImages(imageList);
+  };
+
   return (
     <Container>
       <Row>
@@ -66,7 +77,7 @@ function EditFilmPage() {
           <DashboardSideMenuComponent></DashboardSideMenuComponent>
         </Col>
         <Col lg="8">
-          <h2>Add a new Film:</h2>
+          <h2>Update Film:</h2>
           <Form className="text-left" onSubmit={(e) => onSubmit(e as any)}>
             <Form.Group className="mb-3">
               <Form.Label>Title:</Form.Label>
@@ -109,6 +120,69 @@ function EditFilmPage() {
                 value={favorite as any}
               />
             </Form.Group>
+
+            <ImageUploading
+              multiple
+              value={images}
+              onChange={onChange}
+              maxNumber={maxNumber}
+              dataURLKey="data_url"
+            >
+              {({
+                imageList,
+                onImageUpload,
+                onImageRemoveAll,
+                onImageUpdate,
+                onImageRemove,
+                isDragging,
+                dragProps,
+              }) => (
+                // write your building UI
+                <div className="upload__image-wrapper">
+                  <Row>
+                    {imageList.map((image, index) => (
+                      <Col>
+                        <div key={index} className="image-item">
+                          <img
+                            src={image["data_url"]}
+                            alt=""
+                            className="film-img"
+                          />
+                          <div className="image-item__btn-wrapper">
+                            <Button
+                              variant="success"
+                              onClick={() => onImageUpdate(index)}
+                            >
+                              Update
+                            </Button>
+                            <Button
+                              variant="warning"
+                              onClick={() => onImageRemove(index)}
+                            >
+                              Remove
+                            </Button>
+                          </div>
+                        </div>
+                      </Col>
+                    ))}
+                  </Row>
+                  <div className="two-btn-wrapper">
+                    <Button
+                      variant="primary"
+                      style={isDragging ? { color: "red" } : undefined}
+                      onClick={onImageUpload}
+                      {...dragProps}
+                    >
+                      Click or Drop here
+                    </Button>
+                    &nbsp;
+                    <Button variant="danger" onClick={onImageRemoveAll}>
+                      Remove all images
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </ImageUploading>
 
             <div className="text-center">
               <Button variant="primary" type="submit">
