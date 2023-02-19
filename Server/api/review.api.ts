@@ -6,12 +6,18 @@ import ReviewDal from "../dal/review.dal";
 import InvitationDal from "../dal/invitation.dal";
 import { MosquitoService } from "../services/mosquito.service";
 import { MqttReviewModel, MqttReviewStatus } from "../models/MqttReview.model";
+import { Validator } from "express-json-validator-middleware";
 
 class ReviewApi {
   dal = new ReviewDal();
   invitationDal = new InvitationDal();
   authService = new AuthService();
-  constructor(private app: Express, private mqttSrv: MosquitoService) {}
+  validationSchema: any;
+  constructor(private app: Express, private mqttSrv: MosquitoService,   private validator: Validator) {
+    this.validationSchema = this.validator.ajv.getSchema(
+      "ssz://schemas/invitationModel.schema.json"
+    )?.schema;
+  }
 
   init = async () => {
     this.create();
@@ -25,6 +31,7 @@ class ReviewApi {
     this.app.post(
       "/api/reviews",
       this.authService.isLoggedIn,
+      this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response) => {
         try {
           const { review, reviewDate, rating, completed, filmId } = req.body;
@@ -81,6 +88,7 @@ class ReviewApi {
     this.app.put(
       "/api/reviews/:id",
       this.authService.isLoggedIn,
+      this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response) => {
         try {
           const { review, reviewDate, rating, completed } = req.body;

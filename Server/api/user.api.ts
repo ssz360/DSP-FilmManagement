@@ -6,15 +6,22 @@ import { Request, Response, Express } from "express";
 import AuthService from "../services/auth.service";
 import WebsocketService from "../services/websocket.service";
 import { MessageType } from "../models/websocketMessage";
+import { Validator } from "express-json-validator-middleware";
 
 class UserApi {
   dal = new userDAL();
+  validationSchema: any;
 
   constructor(
     private app: Express,
     private authSrv: AuthService,
-    private wsSrv: WebsocketService
-  ) {}
+    private wsSrv: WebsocketService,
+    private validator: Validator
+  ) {
+    this.validationSchema = this.validator.ajv.getSchema(
+      "ssz://schemas/userModel.schema.json"
+    )?.schema;
+  }
 
   init = async () => {
     this.login();
@@ -48,6 +55,7 @@ class UserApi {
   register() {
     this.app.post(
       "/api/user/register",
+      this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response, next) => {
         const { email, password, passwordConfirmation, name } = req.body;
         let validation = validator.isEmail(email);
@@ -81,7 +89,7 @@ class UserApi {
             password: password,
             email: email,
             name: name,
-            salt: ""
+            salt: "",
           };
           const result = await this.dal.addNew(newUser);
           if (result.id) {

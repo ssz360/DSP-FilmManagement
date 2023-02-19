@@ -5,17 +5,25 @@ import InvitationModel from "../models/invitation.model";
 import UserDal from "../dal/user.dal";
 import FilmDal from "../dal/film.dal";
 import FilmModel from "../models/film.model";
+import { Validator } from "express-json-validator-middleware";
 
 class InvitationApi {
   dal = new InvitationDal();
   userDal = new UserDal();
   filmDal = new FilmDal();
   authService = new AuthService();
-  constructor(private app: Express) {}
+  validationSchema: any;
+
+  constructor(private app: Express,
+    private validator: Validator) {
+      this.validationSchema = this.validator.ajv.getSchema(
+        "ssz://schemas/invitationModel.schema.json"
+      )?.schema;
+    }
 
   init = async () => {
     this.create();
-    this.deleteFilms();
+    this.deleteInvitation();
     this.getByInvitations();
     this.getByIssuerUserId();
     // this.setAsDone();
@@ -112,6 +120,7 @@ class InvitationApi {
     this.app.post(
       "/api/invitation",
       this.authService.isLoggedIn,
+      this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response) => {
         try {
           const { filmId, invitedUserId} = req.body;
@@ -133,7 +142,7 @@ class InvitationApi {
     );
   }
 
-  deleteFilms() {
+  deleteInvitation() {
     this.app.delete(
       "/api/invitation/:id",
       this.authService.isLoggedIn,

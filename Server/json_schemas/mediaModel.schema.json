@@ -1,6 +1,6 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "MediaModel",
+    "$id": "ssz://schemas/mediaModel.schema.json",
     "title": "The Media Model",
     "type": "object",
     "properties": {

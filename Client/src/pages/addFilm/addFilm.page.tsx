@@ -29,17 +29,16 @@ function AddFilmPage() {
         {
           favorite,
           isPrivate,
-          rating,
+          rating: +rating,
           title,
           watchDate,
           medias: images.map((x: any) => {
-            return { data: x.data_url,name:x.file.name };
+            return { data: x.data_url, name: x.file.name };
           }),
         },
         { credentials: "include" }
       )
       .then((film) => {
-
         setFavorite(false);
         setImages([]);
         setIsPrivate(false);

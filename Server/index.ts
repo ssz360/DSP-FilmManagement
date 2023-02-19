@@ -24,6 +24,7 @@ import GprcApi from "./api/gprc.api";
 import { WebSocketServer, WebSocket } from "ws";
 import WebsocketService from "./services/websocket.service";
 import { MosquitoService } from "./services/mosquito.service";
+import { ValidationError, Validator } from "express-json-validator-middleware";
 
 // ************************************************************ GRPC ***********************************
 
@@ -54,6 +55,23 @@ const websocketSrv = new WebsocketService();
 
 // ************************************************************** mosquito *********************************
 const mosquitoSrv = new MosquitoService();
+// *************************************************************** validator ********************************
+
+const validator = new Validator({
+  verbose: true,
+  schemas: [
+    require("./json_schemas/date.schema.json"),
+    require("./json_schemas/filmModel.schema.json"),
+    require("./json_schemas/invitationModel.schema.json"),
+    require("./json_schemas/mediaModel.schema.json"),
+    require("./json_schemas/mqttFilmActiveModel.schema.json"),
+    require("./json_schemas/mqttReviewModel.schema.json"),
+    require("./json_schemas/reviewModel.schema.json"),
+    require("./json_schemas/userModel.schema.json"),
+    require("./json_schemas/websocketMessageModel.schema.json"),
+  ],
+});
+
 // ***********************************************************************************************
 
 const app = express();
@@ -82,10 +100,10 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 
 // ****************** declare services *****************
 const authSrv = new AuthService();
-const userApis = new UserApi(app, authSrv, websocketSrv);
-const filmApis = new FilmApi(app, websocketSrv, mosquitoSrv);
-const reviewApis = new ReviewApi(app, mosquitoSrv);
-const invitationsApis = new InvitationApi(app);
+const userApis = new UserApi(app, authSrv, websocketSrv, validator);
+const filmApis = new FilmApi(app, websocketSrv, mosquitoSrv, validator);
+const reviewApis = new ReviewApi(app, mosquitoSrv, validator);
+const invitationsApis = new InvitationApi(app, validator);
 const gprcApis = new GprcApi(app);
 // ****************** init services ********************
 authSrv.init();
@@ -98,7 +116,17 @@ gprcApis.init();
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get("/", (req: Request, res: Response) => {});
+app.use((error: any, request: any, response: any, next: any) => {
+  // Check the error is a validation error
+  if (error instanceof ValidationError) {
+    // Handle the error
+    response.status(400).send(error.validationErrors);
+    next();
+  } else {
+    // Pass error on if not a validation error
+    next(error);
+  }
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);

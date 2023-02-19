@@ -10,7 +10,11 @@ import * as fs from "fs";
 import InvitationDal from "../dal/invitation.dal";
 import WebsocketService from "../services/websocket.service";
 import { MessageType } from "../models/websocketMessage";
-import { MqttFilmActiveModel, MqttFilmActiveStatus } from "../models/mqttFilmActiveModel";
+import {
+  MqttFilmActiveModel,
+  MqttFilmActiveStatus,
+} from "../models/mqttFilmActiveModel";
+import { ValidateFunction, Validator } from "express-json-validator-middleware";
 
 class FilmApi {
   dal = new FilmDal();
@@ -18,11 +22,17 @@ class FilmApi {
   invitationDal = new InvitationDal();
   authService = new AuthService();
   filmDal = new FilmDal();
+  validationSchema: any;
   constructor(
     private app: Express,
     private websocketSrv: WebsocketService,
-    private mqttSrv: MosquitoService
-  ) {}
+    private mqttSrv: MosquitoService,
+    private validator: Validator
+  ) {
+    this.validationSchema = this.validator.ajv.getSchema(
+      "ssz://schemas/filmModel.schema.json"
+    )?.schema;
+  }
 
   init = async () => {
     this.create();
@@ -41,6 +51,7 @@ class FilmApi {
     this.app.post(
       "/api/films",
       this.authService.isLoggedIn,
+      this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response) => {
         try {
           const { title, watchDate, rating, favorite, isPrivate, medias } =
@@ -103,6 +114,7 @@ class FilmApi {
     this.app.put(
       "/api/films/:id",
       this.authService.isLoggedIn,
+      this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response) => {
         try {
           const { title, watchDate, rating, favorite } = req.body;

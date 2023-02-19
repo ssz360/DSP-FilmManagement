@@ -1,9 +1,14 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "MqttFilmActiveModel",
+  "$id": "ssz://schemas/mqttFilmActiveModel.schema.json",
   "title": "The Mqtt Film Active Model",
   "type": "object",
+  "additionalProperties": false,
   "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "path to the JSON Schema to use for the validation of the JSON file describing the MQTT Message"
+    },
     "status": {
       "type": "string",
       "description": "current condition of the film (the available types are active if it is selected by a user, inactive if it is not selected by any user, or deleted if it has been removed from the service)",
@@ -17,5 +22,16 @@
       "type": "string",
       "description": "name of the user"
     }
-  }
+  },
+  "required": ["status"],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "typeMessage": { "const": "active" } }
+      },
+      "then": {
+        "required": ["userId", "userName"]
+      }
+    }
+  ]
 }

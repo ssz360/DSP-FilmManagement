@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "userModel",
+  "$id": "ssz://schemas/userModel.schema.json",
   "title": "The User Model",
   "type": "object",
   "properties": {
     "id": { "type": "integer" },
     "name": { "type": "string" },
-    "email": { "type": "string", "format": "email" },
+    "email": { "type": "string" },
     "password": { "type": "string", "minLength": 6, "maxLength": 20 }
   }
 }
