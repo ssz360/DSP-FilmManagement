@@ -145,25 +145,6 @@ class UserApi {
       }
     });
   }
-
-  // getOnlineUsers() {
-  //   this.app.get("/api/user/online", async (req: Request, res: Response) => {
-  //     try {
-  //       req.sessionStore.all?.((err:any, data:any) => {
-  //         const users = [];
-  //         for(let i in data){
-  //           const el = data[i];
-  //           const user = el.passport.user;
-  //           users.push(user);
-  //         }
-  //         res.status(200).json(users);
-  //       });
-  //       return;
-  //     } catch (error) {
-  //       res.status(500).json({ message: error });
-  //     }
-  //   });
-  // }
 }
 
 export default UserApi;

@@ -93,29 +93,6 @@ class InvitationApi {
     );
   }
 
-  //   setAsDone() {
-  //     this.app.put(
-  //       "/api/invitation/:id",
-  //       this.authService.isLoggedIn,
-  //       async (req, res) => {
-  //         const { id } = req.params;
-  //         const invitation = await this.dal.getById(+id);
-  //         if (invitation.issuedById !== req.user?.id) {
-  //           res.status(401).json({
-  //             error: "You are not authorized to change this invitation",
-  //           });
-  //         }
-  //         let result = await this.dal.setInvitationAsDone(+id);
-  //         if (!result) {
-  //           res.status(404).json({ error: "The invitation not found" });
-  //           return;
-  //         }
-
-  //         res.status(200).json(result);
-  //       }
-  //     );
-  //   }
-
   create() {
     this.app.post(
       "/api/invitation",

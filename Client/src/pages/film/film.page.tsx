@@ -107,7 +107,7 @@ function FilmPage() {
                 <strong>Starring:</strong>
               </p>
               <ul className="movie__actors list--inline">
-                {movie?.Actors.split(",").map((actor: any) => (
+                {movie?.Actors?.split(",")?.map((actor: any) => (
                   <li key={actor}>{actor}</li>
                 ))}
               </ul>

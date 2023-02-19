@@ -16,6 +16,7 @@ import "./review.component.css";
 import { getGlobalUser } from "../../global/variables.global";
 import { MosquitoService } from "../../services/mosquito.service";
 import React from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 let mqttSrv: MosquitoService;
 
@@ -34,13 +35,13 @@ function ReviewFilmComponent(props: any) {
   const api = new Reviews();
 
   useEffect(() => {
-    getReviews();
-    setUser(getGlobalUser());
-
     if (!mqttSrv) {
       mqttSrv = new MosquitoService(onNewMqttMessage);
       mqttSrv.subscribe(`film/${props.filmId}/review`);
     }
+    
+    getReviews();
+    setUser(getGlobalUser());
 
     return () => {
       mqttSrv.client.end();
@@ -49,12 +50,16 @@ function ReviewFilmComponent(props: any) {
   }, []);
 
   async function getReviews() {
-    const selectedFilm = (
+    const reviews = (
       await api.getReviewByFilmId(props.filmId as any, {
         credentials: "include",
       })
     ).data;
-    setComments(selectedFilm);
+    setComments(reviews);
+
+    reviews.forEach((el) => {
+      mqttSrv.subscribe(`review/${el.id}/+`);
+    });
   }
   function onSubmit(e: Event) {
     e.preventDefault();
@@ -63,10 +68,10 @@ function ReviewFilmComponent(props: any) {
       .submitNewReview(
         {
           completed: true,
-          rating,
+          rating: +rating,
           review,
           reviewDate,
-          filmId: props.filmId as any,
+          filmId: +props.filmId,
         },
         { credentials: "include" }
       )
@@ -122,39 +127,48 @@ function ReviewFilmComponent(props: any) {
     // getReviews();
   }
 
-  const onNewMqttMessage = (channel: string, message: MqttFilmActiveModel) => {
-    if (channel !== `film/${props.filmId}/review`) {
-      return;
-    }
+  const onNewMqttMessage = (channel: string, message: any) => {
+    if (channel === `film/${props.filmId}/review`) {
+      setComments((comments) => {
+        const result: MqttReviewModel = JSON.parse(message.toString());
 
-    setComments((comments) => {
-      const result: MqttReviewModel = JSON.parse(message.toString());
-      
-      const review:ReviewModel = comments.find((x) => x.id === result.id);
-      if (result.status === "updated") {
-
-        review.rating = result.rating;
-        review.review = result.review;
-        review.reviewDate = result.reviewDate;
-      } else if (result.status === "created") {
-        if(!review){
-          comments.push(result);
+        const review: ReviewModel = comments.find((x) => x.id === result.id);
+        if (result.status === "updated") {
+          review.rating = result.rating;
+          review.review = result.review;
+          review.reviewDate = result.reviewDate;
+        } else if (result.status === "created") {
+          if (!review) {
+            comments.push(result);
+          }
+        } else if (result.status === "deleted") {
+          const index = comments.indexOf(review);
+          comments.splice(index, 1);
         }
-      } else if (result.status === "deleted") {
-        const index = comments.indexOf(review);
-        comments.splice(index, 1);
-      }
-      console.log("film", result, review);
 
-      return [...comments];
-    });
+        return [...comments];
+      });
+    } else if (channel.startsWith("review/")) {
+      console.log(channel);
+      const messageId = channel.split("/")[1];
+      const changed = channel.split("/")[2];
+      const result: { old: string; new: string } = JSON.parse(
+        message.toString()
+      );
+
+      toast.success(
+        `${changed} of Comment ${messageId} changed from ${result.old} to ${result.new}.`,{
+          duration:7000
+        }
+      );
+    }
   };
 
   return (
     <Container className="review-section">
       {comments.map((comment) => {
         return (
-          <Row className="comment">
+          <Row key={comment.id} className="comment">
             <Col lg={3}>
               <div>
                 <span>
@@ -267,9 +281,7 @@ function ReviewFilmComponent(props: any) {
           )}
         </div>
       </Form>
-
       {/* *************** modal ************** */}
-
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Warning</Modal.Title>
@@ -287,6 +299,8 @@ function ReviewFilmComponent(props: any) {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* *************************** toast ***************************** */}
+      <Toaster position="top-right" reverseOrder={false} />
     </Container>
   );
 }

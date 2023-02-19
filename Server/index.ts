@@ -4,16 +4,16 @@ import passport from "passport";
 import session from "express-session";
 import cors from "cors";
 import AuthService from "./services/auth.service";
-import UserApi from "./api/user.api";
-import FilmApi from "./api/film.api";
+import UserApi from "./apis/user.api";
+import FilmApi from "./apis/film.api";
 
 import swaggerUi from "swagger-ui-express";
 import swaggerDocument from "../REST APIs Design/openApi.json";
 
-import ReviewApi from "./api/review.api";
-import InvitationApi from "./api/invitation.api";
+import ReviewApi from "./apis/review.api";
+import InvitationApi from "./apis/invitation.api";
 import path from "path";
-import GprcApi from "./api/gprc.api";
+import GprcApi from "./apis/gprc.api";
 import WebsocketService from "./services/websocket.service";
 import { MosquitoService } from "./services/mosquito.service";
 import { ValidationError, Validator } from "express-json-validator-middleware";
