@@ -6,6 +6,7 @@ import UserDal from "../dal/user.dal";
 import FilmDal from "../dal/film.dal";
 import FilmModel from "../models/film.model";
 import { Validator } from "express-json-validator-middleware";
+import { InvitationController } from "../controllers/invitation.controller";
 
 class InvitationApi {
   dal = new InvitationDal();
@@ -13,13 +14,13 @@ class InvitationApi {
   filmDal = new FilmDal();
   authService = new AuthService();
   validationSchema: any;
+  controller = new InvitationController(this.dal, this.userDal, this.filmDal);
 
-  constructor(private app: Express,
-    private validator: Validator) {
-      this.validationSchema = this.validator.ajv.getSchema(
-        "ssz://schemas/invitationModel.schema.json"
-      )?.schema;
-    }
+  constructor(private app: Express, private validator: Validator) {
+    this.validationSchema = this.validator.ajv.getSchema(
+      "ssz://schemas/invitationModel.schema.json"
+    )?.schema;
+  }
 
   init = async () => {
     this.create();
@@ -34,29 +35,17 @@ class InvitationApi {
       "/api/invitation/issuer",
       this.authService.isLoggedIn,
       async (req, res) => {
-        let result = await this.dal.getInvitationByIssuerUserId(
-          req.user?.id as any
+        const result = await this.controller.getByIssuerUserId(
+          req.user?.id as number
         );
 
-        for (let el of result) {
-          const issuer = await this.userDal.getById(el.issuedById);
-          delete issuer.password;
-          delete issuer.salt;
-          const invited = await this.userDal.getById(el.invitedUserId);
-          delete invited.password;
-          delete invited.salt;
-          const film = await this.filmDal.getFilmById(el.filmId);
-          el.issuedBy = issuer;
-          el.invitedUser = invited;
-          el.film = film as FilmModel;
+        if (result.error) {
+          return res
+            .status(result.error.code)
+            .json({ message: result.error.message });
+        } else {
+          return res.status(200).json(result.data);
         }
-
-        if (!result) {
-          res.status(404).json({ error: "The invitation not found" });
-          return;
-        }
-
-        res.status(200).json(result);
       }
     );
   }
@@ -66,29 +55,16 @@ class InvitationApi {
       "/api/invitation/invited",
       this.authService.isLoggedIn,
       async (req, res) => {
-        let result = await this.dal.getInvitationByInvitedUserId(
-          req.user?.id as any
+        const result = await this.controller.getByInvitations(
+          req.user?.id as number
         );
-
-        for (let el of result) {
-          const issuer = await this.userDal.getById(el.issuedById);
-          delete issuer.password;
-          delete issuer.salt;
-          const invited = await this.userDal.getById(el.invitedUserId);
-          delete invited.password;
-          delete invited.salt;
-          const film = await this.filmDal.getFilmById(el.filmId);
-          el.issuedBy = issuer;
-          el.invitedUser = invited;
-          el.film = film as FilmModel;
+        if (result.error) {
+          return res
+            .status(result.error.code)
+            .json({ message: result.error.message });
+        } else {
+          return res.status(200).json(result.data);
         }
-
-        if (!result) {
-          res.status(404).json({ error: "The invitation not found" });
-          return;
-        }
-
-        res.status(200).json(result);
       }
     );
   }
@@ -100,18 +76,15 @@ class InvitationApi {
       this.validator.validate({ body: this.validationSchema }),
       async (req: Request, res: Response) => {
         try {
-          const { filmId, invitedUserId} = req.body;
+          const { filmId, invitedUserId } = req.body;
 
-          for (let interviewerId of invitedUserId
-            ) {
-            let invitation = new InvitationModel();
-            invitation.filmId = +filmId;
-            invitation.issuedById = req.user?.id as any;
-            invitation.invitedUserId = +interviewerId;
-            await this.dal.create(invitation);
-          }
+          await this.controller.create(
+            invitedUserId,
+            +filmId,
+            req.user?.id as number
+          );
 
-          return res.status(201).json({ message: "The invitations sent." });
+          res.status(201).json({ message: "The invitations sent." });
         } catch (error: any) {
           res.status(500).json({ error: error?.message });
         }
@@ -126,15 +99,18 @@ class InvitationApi {
       async (req, res) => {
         try {
           const { id } = req.params;
-          let result = await this.dal.getById(+id);
 
-          if (result?.issuedById == (req.user?.id as any)) {
-            this.dal.deleteById(+id);
-            return await res.status(200).json({ result: "true" });
+          const result = await this.controller.deleteInvitation(
+            +id,
+            req.user?.id as number
+          );
+
+          if (result.error) {
+            return res
+              .status(result.error.code)
+              .json({ message: result.error.message });
           } else {
-            return res.status(401).json({
-              message: "You are not authorized to delete this invitation.",
-            });
+            return res.status(200).json(result.data);
           }
         } catch (error: any) {
           return res

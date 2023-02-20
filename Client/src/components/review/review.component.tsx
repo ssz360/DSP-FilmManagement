@@ -3,10 +3,8 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Button, Form, Modal } from "react-bootstrap";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { Reviews } from "../../open_api_models/Reviews";
 import {
-  MqttFilmActiveModel,
   MqttReviewModel,
   ReviewModel,
   UserModel,
@@ -15,7 +13,6 @@ import {
 import "./review.component.css";
 import { getGlobalUser } from "../../global/variables.global";
 import { MosquitoService } from "../../services/mosquito.service";
-import React from "react";
 import toast, { Toaster } from "react-hot-toast";
 
 let mqttSrv: MosquitoService;
@@ -30,7 +27,6 @@ function ReviewFilmComponent(props: any) {
   const [selectedReview, setSelectedReview] = useState<ReviewModel>();
   const [editMode, setEditMode] = useState<boolean>();
 
-  const navigation = useNavigate();
 
   const api = new Reviews();
 
@@ -76,9 +72,6 @@ function ReviewFilmComponent(props: any) {
         { credentials: "include" }
       )
       .then((film) => {
-        //navigation("/user/dashboard");
-        // getReviews();
-
         resetFields();
       });
   }
