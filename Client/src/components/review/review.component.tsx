@@ -27,7 +27,6 @@ function ReviewFilmComponent(props: any) {
   const [selectedReview, setSelectedReview] = useState<ReviewModel>();
   const [editMode, setEditMode] = useState<boolean>();
 
-
   const api = new Reviews();
 
   useEffect(() => {
@@ -35,7 +34,7 @@ function ReviewFilmComponent(props: any) {
       mqttSrv = new MosquitoService(onNewMqttMessage);
       mqttSrv.subscribe(`film/${props.filmId}/review`);
     }
-    
+
     getReviews();
     setUser(getGlobalUser());
 
@@ -54,7 +53,7 @@ function ReviewFilmComponent(props: any) {
     setComments(reviews);
 
     reviews.forEach((el) => {
-      mqttSrv.subscribe(`review/${el.id}/+`);
+      mqttSrv?.subscribe(`review/${el.id}/+`);
     });
   }
   function onSubmit(e: Event) {
@@ -150,8 +149,15 @@ function ReviewFilmComponent(props: any) {
       );
 
       toast.success(
-        `${changed} of Comment ${messageId} changed from ${result.old} to ${result.new}.`,{
-          duration:7000
+        <div>
+          <div>Review Changed:</div>
+          <div>Review ID: {messageId}</div>
+          <div>
+            Changed From: {result.old} to {result.new}
+          </div>
+        </div>,
+        {
+          duration: 7000,
         }
       );
     }
