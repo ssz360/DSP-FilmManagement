@@ -52,14 +52,14 @@ The related schema file: `mqttUpdateModel.schema.json`
 
 ### default users
 
-**user 1**
-  username: user1@gmail.com
-  password: 123456789
+**user 1:**
+username: user1@gmail.com
+password: 123456789
 
-**user 2**
-  username: user2@gmail.com
-  password: 123456789
+**user 2:**
+username: user2@gmail.com
+password: 123456789
 
-**user 3**
-  username: user3@gmail.com
-  password: 123456789
+**user 3:**
+username: user3@gmail.com
+password: 123456789
