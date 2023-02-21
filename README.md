@@ -7,6 +7,8 @@ The structure of this repository is the following:
   - "Server" contains the code of the Film Manager service application;
   - "Server/json_schemas" contains the design of the JSON Schemas.
 
+![main page's screenshot](/screenshots/screenshot1.jpg "screenshot").
+
 # MQTT
 
 ## Design
