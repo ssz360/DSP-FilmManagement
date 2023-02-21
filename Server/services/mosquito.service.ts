@@ -17,7 +17,7 @@ export class MosquitoService {
     this.client = mqtt.connect("mqtt://127.0.0.1:1884");
 
     this.client.on("connect", () => {
-      this.client.subscribe("user/+");
+      this.client.subscribe("user/+", { qos: 1 });
       this.publishAllFilms();
     });
 
@@ -51,7 +51,7 @@ export class MosquitoService {
   private publish(channel: string, message: any) {
     console.log(channel, JSON.stringify(message));
 
-    this.client.publish(channel, JSON.stringify(message));
+    this.client.publish(channel, JSON.stringify(message), { qos: 1 });
   }
 
   publishToFilm_ActiveTopic(filmId: number, message: MqttFilmActiveModel) {

@@ -39,13 +39,13 @@ export class MosquitoService {
   }
 
   subscribe(channel: string) {
-    this.client.subscribe(channel);
+    this.client.subscribe(channel, { qos: 1 });
   }
   unsubscribe(channel: string) {
     this.client.unsubscribe(channel);
   }
 
   publish(channel: string, message: string) {
-    this.client.publish(channel, message);
+    this.client.publish(channel, message, { qos: 1 });
   }
 }

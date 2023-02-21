@@ -20,8 +20,10 @@ import {
 import { subscribeEvent, unsubscribeEvent } from "./services/event.service";
 import { WebsocketService } from "./services/websocket.service";
 import RegisterPage from "./pages/register/register.page";
-import NewMainPage from "./pages/newMain/newMain.page";
+import MainPage from "./pages/main/main.page";
 
+// https://codepen.io/TurkAysenur/pen/ZEpxeYm
+// https://codepen.io/hexagoncircle/pen/RMrQPX
 
 function App() {
 
@@ -32,9 +34,9 @@ function App() {
           <Route path="login" element={<LoginPage />} />
           <Route path="register" element={<RegisterPage />} />
           <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/:component" element={<NewMainPage />} />
-          <Route path="/:component/:sub" element={<NewMainPage />} />
-          <Route path="/:component/:sub/:id" element={<NewMainPage />} />
+          <Route path="/:component" element={<MainPage />} />
+          <Route path="/:component/:sub" element={<MainPage />} />
+          <Route path="/:component/:sub/:id" element={<MainPage />} />
         </Routes>
       </BrowserRouter>
     </div>

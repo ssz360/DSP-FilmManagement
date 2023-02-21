@@ -23,9 +23,7 @@ function DashboardComponent() {
       <DashboardMenuComponent></DashboardMenuComponent>
 
       <div className="content-wrapper">
-        {/* <AlertComponent></AlertComponent> */}
         <div className="content-section">
-          {/* <ListComponent></ListComponent> */}
           {currentPath.includes("/your-films") && (
             <YourFilmsComponent></YourFilmsComponent>
           )}

@@ -5,7 +5,7 @@
   transform: translate(-50%, -50%); */
   height: 600px;
   width: 400px;
-  background-image: url(http://www.rollingstone.it/wp-content/uploads/2017/12/the-greatest-showman-poster.jpg);
+  /* background-image: url(http://www.rollingstone.it/wp-content/uploads/2017/12/the-greatest-showman-poster.jpg); */
   background-size: cover;
   border-radius: 10px;
   box-shadow: 0px 4px 27px -2px rgba(0, 0, 0, 0.75);

@@ -61,7 +61,7 @@ function EditFilmComponent() {
         { credentials: "include" }
       )
       .then((film) => {
-        navigation("/user/dashboard");
+        navigation("/dashboard/your-films");
       });
   }
 

@@ -233,8 +233,12 @@ export class FilmController {
       });
     }
 
-    let final = result.map((r) => FilmModel.convertFromFilmDb(r));
+    let final: FilmModel[] = [];
 
+    for(let film of result){
+      const medias = await this.mediaDal.getByFilmId(film.id);
+      final.push(FilmModel.convertFromFilmDb(film, medias));
+    }
     return { data: final };
   };
 

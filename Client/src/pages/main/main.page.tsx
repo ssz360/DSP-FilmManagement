@@ -1,4 +1,4 @@
-import "./newMain.page.css";
+import "./main.page.css";
 import LeftSideComponent from "../../components/leftSide/leftSide.component";
 import TopMenuComponent from "../../components/topMenu/topMenu.component";
 import DashboardMenuComponent from "../../components/dashboardMenu.tsx/dashboardMenu.component";
@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import DashboardComponent from "../../components/dashboard/dashboard.component";
 import UserInvitationsComponent from "../../components/userInvitations/userInvitations.component";
 
-function NewMainPage() {
+function MainPage() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
   let location = useLocation();
@@ -56,4 +56,4 @@ function NewMainPage() {
   );
 }
 
-export default NewMainPage;
+export default MainPage;

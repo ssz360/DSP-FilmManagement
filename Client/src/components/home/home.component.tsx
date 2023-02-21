@@ -3,7 +3,6 @@ import { FilmModel } from "../../open_api_models/data-contracts";
 import { Films } from "../../open_api_models/Films";
 import FilmCardComponent from "../filmCard/filmCard.component";
 
-
 function HomeComponent() {
   const [films, setFilms] = useState<FilmModel[]>([]);
 
@@ -23,7 +22,9 @@ function HomeComponent() {
       <div className="content-wrapper">
         <div className="content-section">
           {films.map((film) => (
-            <FilmCardComponent film={film}></FilmCardComponent>
+            <div key={film.id} className="inline-block">
+              <FilmCardComponent film={film}></FilmCardComponent>
+            </div>
           ))}
         </div>
       </div>

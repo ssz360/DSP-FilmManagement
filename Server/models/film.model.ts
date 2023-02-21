@@ -23,6 +23,7 @@ class FilmModel {
   }
 
   static convertFromFilmDb(dbFilm: DbFilm, medias?: MediaModel[]): FilmModel {
+    if (!dbFilm) return new FilmModel();
     let resultFilm = new FilmModel(dbFilm.id);
     resultFilm.id = dbFilm.id;
     resultFilm.favorite = dbFilm.favorite;

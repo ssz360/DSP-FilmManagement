@@ -11,3 +11,10 @@ div#root {
 .your-invitations-container {
   margin: 20px;
 }
+
+.content-section {
+  padding-bottom: 160px;
+}
+.inline-block {
+  display: inline-block;
+}

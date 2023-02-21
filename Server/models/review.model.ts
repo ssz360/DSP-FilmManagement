@@ -13,6 +13,7 @@ class ReviewModel {
   userId?: number;
 
   static convertFromReviewDb(dbReview: Review): ReviewModel {
+    if (!dbReview) return new ReviewModel();
     let result = new ReviewModel();
     result.id = dbReview.id;
     result.filmId = dbReview.filmId as any;

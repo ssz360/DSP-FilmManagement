@@ -8,8 +8,8 @@ import React from "react";
 import { userChanged } from "../../services/event.service";
 
 function LoginPage() {
-  const [email, setEmail] = useState("test@test.test");
-  const [password, setPassword] = useState("1234");
+  const [email, setEmail] = useState("user1@gmail.com");
+  const [password, setPassword] = useState("123456789");
 
   let navigate = useNavigate();
 
