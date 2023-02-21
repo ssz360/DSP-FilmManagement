@@ -124,6 +124,9 @@ function ReviewFilmComponent(props: any) {
       setComments((comments) => {
         const result: MqttReviewModel = JSON.parse(message.toString());
 
+        (result as any).invitedUserId = result.userId;
+        console.log(result);
+        
         const review: ReviewModel = comments.find((x) => x.id === result.id);
         if (result.status === "updated") {
           review.rating = result.rating;
@@ -185,7 +188,7 @@ function ReviewFilmComponent(props: any) {
                 <span>{comment.review}</span>
               </div>
             </Col>
-            {comment.userId === user?.id ? (
+            {comment.invitedUserId === user?.id ? (
               <Col lg={2}>
                 <Row>
                   <Col>

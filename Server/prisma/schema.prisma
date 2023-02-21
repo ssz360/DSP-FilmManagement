@@ -51,6 +51,7 @@ model Review {
   invitedUser   User?     @relation(fields: [invitedUserId], references: [id], name: "invitedUser")
   User          User?     @relation(fields: [userId], references: [id], name: "reviews")
   userId        Int?
+  isInvitation  Boolean   @default(false)
 }
 
 model Media {

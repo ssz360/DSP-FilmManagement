@@ -9,12 +9,15 @@ import { FilmModel, UserModel } from "../../open_api_models/data-contracts";
 import { Films } from "../../open_api_models/Films";
 import { Gprc } from "../../open_api_models/Gprc";
 import ReviewFilmComponent from "../review/review.component";
-
+import { Invitation } from "../../open_api_models/Invitation";
 
 function SingleFilmComponent() {
   const [film, setFilm] = useState<FilmModel>();
   const [user, setUser] = useState<UserModel>();
   const [movie, setMovie] = useState<any>();
+  const [hasInvitation, setHasInvitation] = useState<boolean>();
+
+  const invitationApi = new Invitation();
 
   let { id } = useParams();
   const filmApi = new Films();
@@ -32,6 +35,15 @@ function SingleFilmComponent() {
     ).data;
     setFilm(selectedFilm);
     findMovie(selectedFilm.title?.replace(" ", "+"));
+    checkInvitations();
+  }
+
+  async function checkInvitations() {
+    const result = await invitationApi.getListOfInvitations({
+      credentials: "include",
+    });
+
+    setHasInvitation(result.data.length > 0);
   }
 
   const key = "2fb7569a";
@@ -182,7 +194,7 @@ function SingleFilmComponent() {
           })}
         </div>
       </div>
-      {film?.ownerId === user?.id ? (
+      {film?.ownerId === user?.id || hasInvitation ? (
         <ReviewFilmComponent filmId={id}></ReviewFilmComponent>
       ) : (
         <></>

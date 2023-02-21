@@ -18,3 +18,7 @@ div#root {
 .inline-block {
   display: inline-block;
 }
+
+.invitation-con {
+  max-width: 100%;
+}

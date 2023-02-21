@@ -14,7 +14,7 @@ function IssuingInvitationComponent() {
   const [users, setUsers] = useState<UserModel[]>();
   let selectedUsers: UserModel[] = [];
 
-  const { filmId } = useParams();
+  const { id } = useParams();
 
   const userApi = new UserApi();
   const invitationApi = new Invitation();
@@ -35,7 +35,7 @@ function IssuingInvitationComponent() {
   async function sendInvitationsHandler() {
     await invitationApi.issueNewInvitation(
       {
-        filmId: +filmId as any,
+        filmId: +id as any,
         invitedUserId: selectedUsers?.map((u) => +u.id) as any,
       },
       { credentials: "include" }

@@ -540,6 +540,7 @@ body.light-mode .video-bg:before {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin: 20px 10px;
 }
 
 .content-wrapper-context {

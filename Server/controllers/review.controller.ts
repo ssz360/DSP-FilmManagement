@@ -4,7 +4,6 @@ import ReviewDal from "../dal/review.dal";
 import { ControllerResponseModel } from "../models/contollerResult.model";
 import { MqttReviewModel, MqttReviewStatus } from "../models/MqttReview.model";
 import ReviewModel from "../models/review.model";
-import AuthService from "../services/auth.service";
 import { MosquitoService } from "../services/mosquito.service";
 
 export class ReviewController {
@@ -48,13 +47,20 @@ export class ReviewController {
 
     var result = await this.dal.createNew(reviewObj, userId);
 
+    if(!result.invitedUserId){
+      result.invitedUserId = result.userId;
+    }
+    if(!result.issuedById){
+      result.issuedById = result.userId;
+    }
+
     const mqttMessage = new MqttReviewModel();
     mqttMessage.filmId = result.filmId as number;
     mqttMessage.id = result.id;
     mqttMessage.rating = result.rating as number;
     mqttMessage.review = result.review as string;
     mqttMessage.reviewDate = result.reviewDate as Date;
-    mqttMessage.userId = result.userId as number;
+    mqttMessage.userId = result.invitedUserId as number;
     mqttMessage.status = MqttReviewStatus.created;
 
     this.mqttSrv.publishToFilm_ReviewTopic(filmId, mqttMessage);
@@ -86,7 +92,7 @@ export class ReviewController {
     mqttMessage.rating = result.rating as number;
     mqttMessage.review = result.review as string;
     mqttMessage.reviewDate = result.reviewDate as Date;
-    mqttMessage.userId = result.userId as number;
+    mqttMessage.userId = result.invitedUserId as number;
     mqttMessage.status = MqttReviewStatus.updated;
 
     this.mqttSrv.publishToFilm_ReviewTopic(
@@ -128,6 +134,7 @@ export class ReviewController {
   ): Promise<ControllerResponseModel<ReviewModel[]>> => {
     let result = await this.dal.getReviewsOfAFilm(filmId);
 
+
     let final = result.map((r) => ReviewModel.convertFromReviewDb(r));
     return { data: final };
   };
@@ -138,7 +145,7 @@ export class ReviewController {
   ): Promise<ControllerResponseModel<string>> => {
     let result = await this.dal.getReviewsById(reviewId);
 
-    if (result?.userId == userId) {
+    if (result?.invitedUserId == userId) {
       this.dal.deleteById(reviewId);
 
       const mqttMessage = new MqttReviewModel();
@@ -147,7 +154,7 @@ export class ReviewController {
       mqttMessage.rating = result.rating as number;
       mqttMessage.review = result.review as string;
       mqttMessage.reviewDate = result.reviewDate as Date;
-      mqttMessage.userId = result.userId as number;
+      mqttMessage.userId = result.invitedUserId as number;
       mqttMessage.status = MqttReviewStatus.deleted;
 
       this.mqttSrv.publishToFilm_ReviewTopic(

@@ -100,7 +100,7 @@ class FilmDal {
   async getActiveFilmByUserId(userId: number) {
     return await this.db.usersActiveFilms.findFirst({
       where: {
-        userId: userId,
+        userId: userId    
       },
     });
   }

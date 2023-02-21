@@ -172,28 +172,28 @@
   text-align: left;
 }
 
-.single-film .images-wrapper {
+.images-wrapper {
   position: relative;
   width: 300px;
   display: inline-block;
 }
-.single-film .images-wrapper img {
+.images-wrapper img {
   border-radius: 15px;
   width: 100%;
 }
-.single-film .download-wrapper {
+.download-wrapper {
   margin: 10px;
 }
 
-.single-film .download-wrapper span {
+.download-wrapper span {
   margin: 5px;
   font-size: 12px;
 }
 
-.single-film .download-wrapper Button {
+.download-wrapper Button {
   margin: 2px;
 }
-.single-film .delete-btn {
+.delete-btn {
   position: absolute;
   top: 0;
   right: 0;

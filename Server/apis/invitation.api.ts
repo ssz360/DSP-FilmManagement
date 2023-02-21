@@ -55,7 +55,7 @@ class InvitationApi {
       "/api/invitation/invited",
       this.authService.isLoggedIn,
       async (req, res) => {
-        const result = await this.controller.getByInvitations(
+        const result: any = await this.controller.getByInvitations(
           req.user?.id as number
         );
         if (result.error) {

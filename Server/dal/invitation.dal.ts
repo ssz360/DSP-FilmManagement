@@ -55,6 +55,7 @@ class InvitationDal {
         filmId: invitation.filmId,
         issuedById: invitation.issuedById,
         invitedUserId: invitation.invitedUserId,
+        isInvitation: invitation?.isInvitation ?? false,
       },
     })) as InvitationModel;
   }

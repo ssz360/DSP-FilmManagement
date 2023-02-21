@@ -69,6 +69,7 @@ export class InvitationController {
       invitation.filmId = filmId;
       invitation.issuedById = userId;
       invitation.invitedUserId = +interviewerId;
+      invitation.isInvitation=true;
       await this.dal.create(invitation);
     }
   };

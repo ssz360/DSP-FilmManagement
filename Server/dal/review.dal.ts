@@ -28,6 +28,7 @@ class ReviewDal {
       where: {
         invitedUserId: userId,
         filmId: review.filmId,
+        isInvitation: true,
       },
     });
 
@@ -42,17 +43,21 @@ class ReviewDal {
           reviewDate: review.reviewDate,
           completed: review.completed,
           filmId: review.filmId,
+          isInvitation:false,
         },
       });
     } else {
       return await this.db.review.create({
         data: {
           userId: userId,
+          invitedUserId: userId,
+          issuedById: userId,
           rating: review.rating,
           review: review.review,
           reviewDate: review.reviewDate,
           completed: review.completed,
           filmId: review.filmId,
+          isInvitation: false,
         },
       });
     }

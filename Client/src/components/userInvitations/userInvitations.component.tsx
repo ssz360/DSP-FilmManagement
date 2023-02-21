@@ -4,7 +4,6 @@ import { InvitationModel } from "../../open_api_models/data-contracts";
 import { Invitation } from "../../open_api_models/Invitation";
 import { unsubscribeEvent, subscribeEvent } from "../../services/event.service";
 
-
 function UserInvitationsComponent() {
   const [invitations, setInvitations] = useState<InvitationModel[]>();
   const invitationApi = new Invitation();
@@ -24,7 +23,7 @@ function UserInvitationsComponent() {
       credentials: "include",
     });
 
-    setInvitations(result.data);
+    setInvitations(result.data.filter((x) => x.completed === false));
   }
 
   return (
@@ -32,7 +31,7 @@ function UserInvitationsComponent() {
       {invitations?.map((invitation) => {
         return (
           <div key={invitation.id} className="content-wrapper-header">
-            <div className="content-wrapper-context">
+            <div className="content-wrapper-context invitation-con">
               <h3 className="img-content">
                 <svg viewBox="0 0 512 512">
                   <path
@@ -73,18 +72,20 @@ function UserInvitationsComponent() {
                 </svg>
                 {invitation.issuedBy.name} invites you
               </h3>
-              <div className="content-text">
+              <div className="content-text text-left">
                 {invitation.issuedBy.name} invites you to review '
                 {invitation.film.title}' which is a movie that is gotten the
                 rating of {invitation.film.rating} by the user and he wants to
                 kow your opinion too.
               </div>
-              <Link
-                to={"/dashboard/film/" + invitation.filmId}
-                className="content-button"
-              >
-                Write a review
-              </Link>
+              <div>
+                <Link
+                  to={"/dashboard/film/" + invitation.filmId}
+                  className="content-button"
+                >
+                  Write a review
+                </Link>
+              </div>
             </div>
             <img
               className="content-wrapper-img"

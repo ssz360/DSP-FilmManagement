@@ -11,6 +11,7 @@ class InvitationModel {
   invitedUser?: UserModel;
   film?: FilmModel;
   completed: boolean = false;
+  isInvitation:boolean=false;
 }
 
 export default InvitationModel;
