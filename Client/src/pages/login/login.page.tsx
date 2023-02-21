@@ -5,11 +5,12 @@ import { User } from "../../open_api_models/User";
 import { setGlobalUser } from "../../global/variables.global";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import { userChanged } from "../../services/event.service";
 
 function LoginPage() {
   const [email, setEmail] = useState("test@test.test");
   const [password, setPassword] = useState("1234");
-  
+
   let navigate = useNavigate();
 
   function handleEmailChange(e: any) {
@@ -26,9 +27,11 @@ function LoginPage() {
     user
       .login({ email: email, password: password }, { credentials: "include" })
       .then((x) => {
+        userChanged(x.data);
         setGlobalUser(x.data);
 
-        navigate('/');
+        document.location.href = "/";
+        // navigate('/');
       });
   }
 

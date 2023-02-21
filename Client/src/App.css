@@ -4,3 +4,10 @@
 .invitation-alert {
   margin: 0;
 }
+
+div#root {
+  width: 100%;
+}
+.your-invitations-container {
+  margin: 20px;
+}

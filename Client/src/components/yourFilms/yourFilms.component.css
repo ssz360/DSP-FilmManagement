@@ -1,0 +1,10 @@
+.last-white-space {
+    padding: 100px;
+    display: block;
+    width: 100%;
+}
+
+.link-inherent{
+    color: inherit;
+    text-decoration: inherit;
+}

@@ -1,0 +1,75 @@
+.film-card {
+  position: relative;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
+  height: 600px;
+  width: 400px;
+  background-image: url(http://www.rollingstone.it/wp-content/uploads/2017/12/the-greatest-showman-poster.jpg);
+  background-size: cover;
+  border-radius: 10px;
+  box-shadow: 0px 4px 27px -2px rgba(0, 0, 0, 0.75);
+  display: inline-block;
+  margin: 10px;
+}
+.film-card .topbar {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.film-card .topbar .extra {
+  height: 40px;
+  width: 55px;
+  margin-top: -5px;
+  margin-left: 15px;
+  display: inline-block;
+  vertical-align: top;
+  border-radius: 2px;
+  box-shadow: 0px 4px 27px -2px rgba(0, 0, 0, 0.75);
+  line-height: 40px;
+  text-align: center;
+  font-weight: 700;
+}
+.film-card .topbar .technology {
+  background: #4a90e3;
+}
+.film-card .topbar .rating {
+  background: #d7cb23;
+}
+.film-card .card-info {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0) 0%,
+    white 55%,
+    white 100%
+  );
+  padding: 10px 20px;
+  padding-top: 130px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  color: #2d2d2d;
+}
+.film-card .card-info .info {
+  font-size: 16px;
+  border-bottom: 1px solid #e2e2e2;
+}
+.film-card .card-info .info > * {
+  padding-bottom: 10px;
+}
+.film-card .card-info .info .title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #000;
+}
+.film-card .card-info .info .genre {
+  padding-bottom: 5px;
+}
+.film-card .card-info .hours {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px 0;
+}

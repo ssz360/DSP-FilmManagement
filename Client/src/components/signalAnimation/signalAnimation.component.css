@@ -1,0 +1,84 @@
+.beacon-wrapper {
+  width: 80px;
+  height: 80px;
+  margin-right: auto;
+  margin-left: auto;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  position: absolute;
+  top: 10px;
+  left: -25px;
+}
+
+.signal {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  transform: translate3d(0, 0, 0);
+}
+
+.beacon--epicentre {
+  top: calc(50% - 5px);
+  left: calc(50% - 5px);
+  width: 12px;
+  height: 12px;
+  background-color: #4ab4f0;
+  z-index: 10000;
+}
+
+.signal--wave {
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(74, 180, 240, 0.12);
+  opacity: 0;
+  background-color: rgba(74, 180, 240, 0.14);
+  -webkit-animation-name: signal;
+          animation-name: signal;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+  -webkit-animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+          animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  z-index: 8000;
+}
+
+.signal--delay {
+  -webkit-animation-delay: 0.6s;
+          animation-delay: 0.6s;
+  z-index: 9000;
+}
+
+@-webkit-keyframes signal {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes signal {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+.u--dib {
+  display: inline-block;
+}
