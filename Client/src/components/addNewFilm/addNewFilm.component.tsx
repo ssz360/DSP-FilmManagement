@@ -56,7 +56,7 @@ function AddNewFilmComponent() {
       <div className="content-section-title">
         <h3>Add a new Film:</h3>
       </div>
-      <div className="apps-card">
+      <div className="new-film-card">
         <div className="inner-con">
           <Form className="text-left" onSubmit={(e) => onSubmit(e as any)}>
             <Form.Group className="mb-3">

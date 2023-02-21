@@ -7,12 +7,14 @@ import { Button, Form } from "react-bootstrap";
 import "./reviewedFilms.component.css";
 import React from "react";
 import { ActiveFilms } from "../../open_api_models/ActiveFilms";
-import { FilmModel, MqttFilmActiveModel } from "../../open_api_models/data-contracts";
+import {
+  FilmModel,
+  MqttFilmActiveModel,
+} from "../../open_api_models/data-contracts";
 import { Invitation } from "../../open_api_models/Invitation";
 import { MosquitoService } from "../../services/mosquito.service";
 
 let mqttSrv: MosquitoService;
-
 
 function ReviewedFilmsComponent() {
   const [films, setFilms] = useState<FilmModel[]>([]);
@@ -109,16 +111,15 @@ function ReviewedFilmsComponent() {
             return (
               <div key={film.id} className="app-card">
                 <strong className="link-inherent">🎬{" " + film.title}</strong>
-                <div>
-                  <span>set as active:</span>
-                  <div className="active-switch">
-                    <Form.Check
-                      type="switch"
-                      id="custom-switch"
-                      checked={film.id == activeFilm?.id}
-                      onChange={(e) => switchHandler(e.target.checked, film)}
-                    />
-                  </div>
+                <div className="active-switch">
+                  <span className="inline-block">set as active:</span>
+                  <Form.Check
+                    className="inline-block"
+                    type="switch"
+                    id="custom-switch"
+                    checked={film.id == activeFilm?.id}
+                    onChange={(e) => switchHandler(e.target.checked, film)}
+                  />
                 </div>
                 <div className="app-card__subtext">
                   <div>
@@ -132,7 +133,6 @@ function ReviewedFilmsComponent() {
                   </div>
                 </div>
                 <div className="app-card-buttons">
-                  <hr />
                   <div>
                     {messages
                       .filter(
@@ -141,7 +141,7 @@ function ReviewedFilmsComponent() {
                       .map((el) => {
                         return (
                           <div key={el.channel}>
-                            <div>Status: {el.message.status}</div>
+                            <span>Status: {el.message.status}</span>
                             {el.message.status == "active" ? (
                               <div>
                                 <div>User id: {el.message.userId}</div>

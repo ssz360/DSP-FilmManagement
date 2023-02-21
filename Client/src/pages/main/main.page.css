@@ -623,7 +623,7 @@ body.light-mode .video-bg:before {
 .products {
   display: flex;
   align-items: center;
-  width: 150px;
+  width: 550px;
 }
 @media screen and (max-width: 480px) {
   .products {
@@ -845,6 +845,11 @@ body.light-mode .video-bg:before {
   margin-right: 8px;
 }
 
+.new-film-card {
+  display: inline-block;
+  max-width: 500px;
+}
+
 .apps-card {
   display: flex;
   align-items: center;
@@ -886,12 +891,14 @@ body.light-mode .video-bg:before {
   margin-top: 20px;
   border-bottom: 1px solid var(--border-color);
   padding-bottom: 20px;
+  text-align: left;
 }
 .app-card-buttons {
   display: flex;
   align-items: center;
-  margin-left: auto;
+  margin-left: 0;
   margin-top: 16px;
+  text-align: left;
 }
 @media screen and (max-width: 1110px) {
   .app-card {
