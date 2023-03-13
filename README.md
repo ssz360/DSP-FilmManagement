@@ -1,4 +1,8 @@
-# Exam Call 2
+## Final Project of Distributed Systems Programming
+# Film management website
+
+Project's Description: [PDF](DSP_20230224.pdf)
+
 
 The structure of this repository is the following:
   - "Client" contains the code of the REACT client implementation;
@@ -8,6 +12,13 @@ The structure of this repository is the following:
   - "Server/json_schemas" contains the design of the JSON Schemas.
 
 ![main page's screenshot](/screenshots/screenshot1.jpg "screenshot").
+![main page's screenshot](/screenshots/s1.jpg "screenshot").
+![main page's screenshot](/screenshots/s2.jpg "screenshot").
+![main page's screenshot](/screenshots/s3.jpg "screenshot").
+![main page's screenshot](/screenshots/s4.jpg "screenshot").
+![main page's screenshot](/screenshots/s5.jpg "screenshot").
+![main page's screenshot](/screenshots/s6.jpg "screenshot").
+![main page's screenshot](/screenshots/s7.jpg "screenshot").
 
 # MQTT
 
